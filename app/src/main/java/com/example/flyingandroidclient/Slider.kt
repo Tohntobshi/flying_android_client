@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 
 val POSITION_CHANGE_FOR_FULL_HEIGHT = 3f
 
@@ -15,7 +16,8 @@ class Slider @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     private val paint = Paint().apply {
-        color = Color.rgb(54 , 237,237)
+        // color = Color.rgb(54 , 237,237)
+        color = ResourcesCompat.getColor(resources, R.color.teal_200, null)
         textAlign = Paint.Align.CENTER
     }
 
@@ -39,8 +41,8 @@ class Slider @JvmOverloads constructor(
         }
         paint.style = Paint.Style.FILL
         paint.textSize = width.toFloat() / 2f
-        canvas?.rotate(90.0f)
-        canvas?.drawText(String.format("%.02f", position), height.toFloat() / 2f, -width.toFloat() / 3f, paint)
+        canvas?.rotate(-90.0f)
+        canvas?.drawText(String.format("%.02f", position), -height.toFloat() / 2f, width.toFloat() * 2f/3f, paint)
     }
 
     private var dragged = false

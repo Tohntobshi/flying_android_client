@@ -1,18 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Options">
-
-    <com.example.flyingandroidclient.Slider
-        android:layout_width="45dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".OptionsFragment">
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.flyingandroidclient.MainActivityViewModel" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
+        android:orientation="vertical"
+        tools:background="@color/cardview_dark_background" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UUID"
+                android:textColor="@color/white"
+                android:layout_marginRight="10dp" />
 
-</FrameLayout>
+            <EditText android:id="@+id/uuidInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:layout_marginLeft="10dp"
+                android:text="@{viewmodel.serviceUUID}"
+                android:backgroundTint="@color/white"
+                android:foregroundTint="@color/white" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewmodel.connectionStatus}"
+                tools:text="Connection status"
+                android:textColor="@color/white"
+                android:layout_marginRight="10dp" />
+
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/device_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+    </LinearLayout>
+
+</layout>

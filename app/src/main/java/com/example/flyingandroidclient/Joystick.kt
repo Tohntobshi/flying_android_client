@@ -8,6 +8,7 @@ import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 
 val MAX_LENGTH = 0.4f
 
@@ -43,7 +44,8 @@ class Joystick @JvmOverloads constructor(
     }
 
     private val paint = Paint().apply {
-        color = Color.rgb(54 , 237,237)
+        // color = Color.rgb(54 , 237,237)
+        color = ResourcesCompat.getColor(resources, R.color.teal_200, null)
     }
 
     private var dragged = false

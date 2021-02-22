@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.flyingandroidclient.MainActivityViewModel" />
+    </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".TweaksFragment"
+        tools:background="@color/cardview_dark_background" >
+
+        <com.example.flyingandroidclient.Slider
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+    </FrameLayout>
+</layout>
