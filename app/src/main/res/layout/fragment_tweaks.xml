@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
     <data>
         <variable
             name="viewmodel"
             type="com.example.flyingandroidclient.MainActivityViewModel" />
     </data>
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".TweaksFragment"
@@ -23,5 +24,23 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp" />
 
-    </FrameLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp">
+            <com.example.flyingandroidclient.Plot
+                android:layout_width="400dp"
+                android:layout_height="100dp"
+                app:plotData="@{viewmodel.pitchErrors}" />
+
+            <com.example.flyingandroidclient.Plot
+                android:layout_marginTop="20dp"
+                android:layout_width="400dp"
+                android:layout_height="100dp"
+                app:plotData="@{viewmodel.rollErrors}" />
+
+        </LinearLayout>
+    </LinearLayout>
 </layout>
