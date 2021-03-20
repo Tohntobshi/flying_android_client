@@ -1,0 +1,14 @@
+<resources>
+    <declare-styleable name="Plot">
+        <attr name="plotData" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="Slider">
+        <attr name="position" format="float" />
+        <attr name="positionChangeMultiplier" format="float" />
+        <attr name="fractionDigits" format="integer" />
+        <attr name="orientation" format="enum">
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

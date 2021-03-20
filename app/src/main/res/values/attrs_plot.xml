@@ -1,5 +1,0 @@
-<resources>
-    <declare-styleable name="Plot">
-        <attr name="plotData" format="reference" />
-    </declare-styleable>
-</resources>
