@@ -21,6 +21,9 @@ class TweaksFragment : Fragment() {
         binding.viewmodel = model
         binding.lifecycleOwner = this
 
+        binding.slider.setValueChangedListener { model.setExampleValue(it) }
+        binding.slider2.setValueChangedListener { model.setExampleValue(it) }
+
         return binding.root
     }
 

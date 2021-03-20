@@ -15,6 +15,7 @@
         tools:background="@color/cardview_dark_background" >
 
         <com.example.flyingandroidclient.Slider
+            android:id="@+id/slider"
             android:layout_width="45dp"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
@@ -22,7 +23,11 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            app:position="@{viewmodel.exampleValue}"
+            app:orientation="vertical"
+            app:positionChangeMultiplier="0.01"
+            app:fractionDigits="3"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -40,6 +45,21 @@
                 android:layout_width="400dp"
                 android:layout_height="100dp"
                 app:plotData="@{viewmodel.rollErrors}" />
+
+            <com.example.flyingandroidclient.Slider
+                android:id="@+id/slider2"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:position="@{viewmodel.exampleValue}"
+                app:orientation="horizontal"
+                app:positionChangeMultiplier="0.1"
+                app:fractionDigits="3" />
 
         </LinearLayout>
     </LinearLayout>

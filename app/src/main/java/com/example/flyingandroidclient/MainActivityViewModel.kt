@@ -40,6 +40,11 @@ class MainActivityViewModel: ViewModel() {
     val pitchErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val rollErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
 
+    val exampleValue = MutableLiveData<Float>(0f)
+    fun setExampleValue(v: Float) {
+        exampleValue.value = v
+    }
+
     private val _isConnected = MutableLiveData<Boolean>(false)
     val isConnected: LiveData<Boolean>
         get() {
