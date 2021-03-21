@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.res.getFloatOrThrow
 import kotlin.math.max
 import kotlin.math.min
 
@@ -27,18 +28,14 @@ class Slider @JvmOverloads constructor(
             _position = value
             invalidate()
         }
-        get() {
-            return _position
-        }
+        get() = _position
     private var _positionChangeMultiplier = 1f
     var positionChangeMultiplier: Float
         set(value) {
             _positionChangeMultiplier = value
             invalidate()
         }
-        get() {
-            return _positionChangeMultiplier
-        }
+        get() = _positionChangeMultiplier
     private var _format = "%.02f"
     private var _fractionDigits = 2
     var fractionDigits: Int
@@ -47,10 +44,11 @@ class Slider @JvmOverloads constructor(
             _format = "%.0${_fractionDigits}f"
             invalidate()
         }
-        get() {
-            return fractionDigits
-        }
+        get() = _fractionDigits
     private var isVertical = true
+    private var minValue: Float? = null
+    private var maxValue: Float? = null
+
 
     init {
         context.theme.obtainStyledAttributes(
@@ -61,6 +59,8 @@ class Slider @JvmOverloads constructor(
                 fractionDigits = getInteger(R.styleable.Slider_fractionDigits, 2)
                 isVertical = getInteger(R.styleable.Slider_orientation, 0) == 0
                 _positionChangeMultiplier = getFloat(R.styleable.Slider_positionChangeMultiplier, 1f)
+                minValue = try { getFloatOrThrow(R.styleable.Slider_minValue) } catch (e: Exception) { null }
+                maxValue = try { getFloatOrThrow(R.styleable.Slider_maxValue) } catch (e: Exception) { null }
             } finally {
                 recycle()
             }
@@ -114,6 +114,7 @@ class Slider @JvmOverloads constructor(
         if (e.action === MotionEvent.ACTION_MOVE && !dragged) return false
         if (e.action === MotionEvent.ACTION_UP) {
             dragged = false
+            parent.requestDisallowInterceptTouchEvent(false)
             return true
         }
         val touchPosition = if (isVertical) e.getY(0) else e.getX(0)
@@ -122,9 +123,12 @@ class Slider @JvmOverloads constructor(
             dragged = true
             dragStartTouchPosition = touchPosition
             dragStartPosition = position
+            parent.requestDisallowInterceptTouchEvent(true)
         }
         val touchPositionDelta = (touchPosition - dragStartTouchPosition) * (if (isVertical) 1f else -1f)
         draggedPosition = dragStartPosition + positionChangeMultiplier * POSITION_CHANGE_FOR_FULL_LENGTH * touchPositionDelta / viewLength
+        if (minValue != null && draggedPosition < minValue!!) draggedPosition = minValue!!
+        if (maxValue != null && draggedPosition > maxValue!!) draggedPosition = maxValue!!
         invalidate()
         for (callback in callbacks) {
             callback(draggedPosition)

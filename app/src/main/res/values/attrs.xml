@@ -5,6 +5,8 @@
     <declare-styleable name="Slider">
         <attr name="position" format="float" />
         <attr name="positionChangeMultiplier" format="float" />
+        <attr name="minValue" format="float" />
+        <attr name="maxValue" format="float" />
         <attr name="fractionDigits" format="integer" />
         <attr name="orientation" format="enum">
             <enum name="vertical" value="0" />

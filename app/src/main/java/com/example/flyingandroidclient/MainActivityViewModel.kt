@@ -1,12 +1,13 @@
 package com.example.flyingandroidclient
 
 import android.bluetooth.BluetoothDevice
-import android.graphics.PointF
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.nio.ByteBuffer
+import kotlin.random.Random
 
 
 //@ExperimentalUnsignedTypes // just to make it clear that the experimental unsigned types are used
@@ -28,39 +29,38 @@ class MainActivityViewModel: ViewModel() {
 //        viewModelScope.launch {
 //            while (true) {
 //                delay(50)
-//                val list = pitchErrors.value
-//                list?.addNotExceed(Random.Default.nextDouble(-1.0, 1.0).toFloat(), 100)
-//                pitchErrors.value = list
+//                addToList(Random.Default.nextDouble(-40.0, 40.0).toFloat(), pitchErrors)
+//                addToList(Random.Default.nextDouble(-40.0, 40.0).toFloat(), rollErrors)
+//                addToList(Random.Default.nextDouble(-40.0, 40.0).toFloat(), pitchErrorChangeRates)
+//                addToList(Random.Default.nextDouble(-40.0, 40.0).toFloat(), rollErrorChangeRates)
 //            }
 //        }
 //    }
 
     private val connection = BluetoothConnection()
+    val controls = ControlsManager(connection)
 
     val pitchErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val rollErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
+    val pitchErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
+    val rollErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
 
-    val exampleValue = MutableLiveData<Float>(0f)
-    fun setExampleValue(v: Float) {
-        exampleValue.value = v
+    private fun addToList(value: Float, mldlist: MutableLiveData<MutableList<Float>>) {
+        val list = mldlist.value
+        list?.addNotExceed(value, 100)
+        mldlist.value = list
     }
 
     private val _isConnected = MutableLiveData<Boolean>(false)
     val isConnected: LiveData<Boolean>
-        get() {
-            return _isConnected
-        }
+        get() = _isConnected
 
     private val _btDevices: MutableLiveData<Map<String, BluetoothDevice>> = MutableLiveData<Map<String, BluetoothDevice>>(mapOf())
     val btDevices: LiveData<Map<String, BluetoothDevice>>
-        get() {
-            return _btDevices
-        }
+        get() = _btDevices
 
     val btDevicesList: LiveData<List<BluetoothDevice>>
-        get() {
-            return Transformations.map(btDevices) { it.toList().map { it.second } }
-        }
+        get() = Transformations.map(btDevices) { it.toList().map { it.second } }
 
     fun addBtDevice(device: BluetoothDevice) {
         _btDevices.value = _btDevices.value?.plus(Pair(device.address, device))
@@ -79,21 +79,15 @@ class MainActivityViewModel: ViewModel() {
 
     private val _currentTab = MutableLiveData<Tabs>(Tabs.MAIN)
     val currentTab: LiveData<Tabs>
-        get() {
-            return _currentTab
-        }
+        get() = _currentTab
 
     private val _serviceUUID = MutableLiveData<String>("848d828b-c486-44df-83fa-5413b06146e0")
     val serviceUUID: LiveData<String>
-        get() {
-            return _serviceUUID
-        }
+        get() = _serviceUUID
 
     private val _connectionStatus = MutableLiveData<String>("not connected")
     val connectionStatus: LiveData<String>
-        get() {
-            return _connectionStatus
-        }
+        get() = _connectionStatus
 
     fun changeServiceUUID(value: String) {
         // Log.i("myinfo", "value changed ${value}")
@@ -114,12 +108,10 @@ class MainActivityViewModel: ViewModel() {
             val currentYawSpeedError = ByteBuffer.wrap(data, 17, 4).float
             val yawSpeedErrorChangeRate = ByteBuffer.wrap(data, 21, 4).float
             withContext(Dispatchers.Main) {
-                val pitchErrorsList = pitchErrors.value
-                pitchErrorsList?.addNotExceed(currentPitchError, 100)
-                pitchErrors.value = pitchErrorsList
-                val rollErrorsList = rollErrors.value
-                rollErrorsList?.addNotExceed(currentRollError, 100)
-                rollErrors.value = rollErrorsList
+                addToList(currentPitchError, pitchErrors)
+                addToList(currentRollError, rollErrors)
+                addToList(pitchErrorChangeRate, pitchErrorChangeRates)
+                addToList(rollErrorChangeRate, rollErrorChangeRates)
                 // do stuff
                 // Log.i("myinfo", "received perr ${currentPitchError} rerr ${currentRollError}")
             }
@@ -141,16 +133,6 @@ class MainActivityViewModel: ViewModel() {
             _isConnected.value = false
             _connectionStatus.value = "not connected"
         }
-    }
-
-    fun setPosition(coord: PointF) {
-//        Log.i("myinfo", "position ${coord.x} ${coord.y}")
-        val data = ByteArray(10)
-        data[0] = MessageTypes.CONTROLS.ordinal.toByte()
-        data[1] = Controls.SET_PITCH_AND_ROLL.ordinal.toByte()
-        ByteBuffer.wrap(data, 2, 4).putFloat(coord.x)
-        ByteBuffer.wrap(data, 6, 4).putFloat(coord.y)
-        connection.send(data)
     }
 
     override fun onCleared() {

@@ -21,8 +21,14 @@ class TweaksFragment : Fragment() {
         binding.viewmodel = model
         binding.lifecycleOwner = this
 
-        binding.slider.setValueChangedListener { model.setExampleValue(it) }
-        binding.slider2.setValueChangedListener { model.setExampleValue(it) }
+        binding.sliderPitchProp.setValueChangedListener { model.controls.setPitchPropCoef(it) }
+        binding.sliderPitchDer.setValueChangedListener { model.controls.setPitchDerCoef(it) }
+        binding.sliderPitchInt.setValueChangedListener { model.controls.setPitchIntCoef(it) }
+        binding.sliderRollProp.setValueChangedListener { model.controls.setRollPropCoef(it) }
+        binding.sliderRollDer.setValueChangedListener { model.controls.setRollDerCoef(it) }
+        binding.sliderRollInt.setValueChangedListener { model.controls.setRollIntCoef(it) }
+        binding.sliderAccTrust.setValueChangedListener { model.controls.setAccTrust(it) }
+        binding.sliderInclChRFilt.setValueChangedListener { model.controls.setInclineChangeRateFilteringCoef(it) }
 
         return binding.root
     }

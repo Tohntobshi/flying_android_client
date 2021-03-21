@@ -8,59 +8,212 @@
             name="viewmodel"
             type="com.example.flyingandroidclient.MainActivityViewModel" />
     </data>
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".TweaksFragment"
         tools:background="@color/cardview_dark_background" >
-
-        <com.example.flyingandroidclient.Slider
-            android:id="@+id/slider"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            app:position="@{viewmodel.exampleValue}"
-            app:orientation="vertical"
-            app:positionChangeMultiplier="0.01"
-            app:fractionDigits="3"/>
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp">
-            <com.example.flyingandroidclient.Plot
-                android:layout_width="400dp"
-                android:layout_height="100dp"
-                app:plotData="@{viewmodel.pitchErrors}" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
-            <com.example.flyingandroidclient.Plot
-                android:layout_marginTop="20dp"
-                android:layout_width="400dp"
-                android:layout_height="100dp"
-                app:plotData="@{viewmodel.rollErrors}" />
-
-            <com.example.flyingandroidclient.Slider
-                android:id="@+id/slider2"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                app:position="@{viewmodel.exampleValue}"
-                app:orientation="horizontal"
-                app:positionChangeMultiplier="0.1"
-                app:fractionDigits="3" />
-
+                android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pitch error"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <com.example.flyingandroidclient.Plot
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:plotData="@{viewmodel.pitchErrors}" />
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderPitchProp"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.pitchPropCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0"/>
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderPitchInt"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.pitchIntCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0"/>
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderPitchDer"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.pitchDerCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pitch err change rate"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp"/>
+                <com.example.flyingandroidclient.Plot
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:plotData="@{viewmodel.pitchErrorChangeRates}" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Accel trust"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderAccTrust"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.accTrust}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0"
+                    app:maxValue="1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="153dp"
+                    android:text="P"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:text="I"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:text="D"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Roll error"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <com.example.flyingandroidclient.Plot
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:plotData="@{viewmodel.rollErrors}" />
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderRollProp"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.rollPropCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0"/>
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderRollInt"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.rollIntCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0"/>
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderRollDer"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.rollDerCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Roll err change rate"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <com.example.flyingandroidclient.Plot
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:plotData="@{viewmodel.rollErrorChangeRates}" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Incline Der Filtering"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderInclChRFilt"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.inclineChangeRateFilteringCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0"
+                    app:maxValue="1"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
+
 </layout>

@@ -26,7 +26,7 @@ class PrimaryContolsFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.joystick.setPositionListener {
-            model.setPosition(it)
+            model.controls.setPosition(it)
         }
 
         return binding.root
