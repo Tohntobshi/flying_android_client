@@ -2,7 +2,8 @@ package com.example.flyingandroidclient
 
 enum class MessageTypes {
     CONTROLS,
-    INFO
+    ERRORS_INFO,
+    CURRENT_OPTIONS_INFO
 }
 
 enum class Controls {
@@ -14,5 +15,11 @@ enum class Controls {
     SET_ROLL_INT_COEF,
     SET_ROLL_DER_COEF,
     SET_ACC_TRUST,
-    SET_INCL_CH_RATE_FILTERING_COEF
+    SET_INCL_CH_RATE_FILTERING_COEF,
+    SET_INCL_FILTERING_COEF,
+    START_SENDING_ERRORS,
+    STOP_SENDING_ERRORS,
+    REQUEST_CURRENT_OPTIONS,
+    SET_ACCELERATION,
+    SET_DIRECTION
 };

@@ -17,14 +17,29 @@
 
         <com.example.flyingandroidclient.Joystick
             android:id="@+id/joystick"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="0dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_height="match_parent"
             android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
-
+            app:direction="@{viewmodel.controls.direction}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.example.flyingandroidclient.AccelerationSlider
+            android:id="@+id/accelSlider"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:value="@{viewmodel.controls.acceleration}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

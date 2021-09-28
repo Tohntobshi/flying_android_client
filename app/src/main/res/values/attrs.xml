@@ -2,6 +2,9 @@
     <declare-styleable name="Plot">
         <attr name="plotData" format="reference" />
     </declare-styleable>
+    <declare-styleable name="Joystick">
+        <attr name="direction" format="float" />
+    </declare-styleable>
     <declare-styleable name="Slider">
         <attr name="position" format="float" />
         <attr name="positionChangeMultiplier" format="float" />
@@ -12,5 +15,8 @@
             <enum name="vertical" value="0" />
             <enum name="horizontal" value="1" />
         </attr>
+    </declare-styleable>
+    <declare-styleable name="AccelerationSlider">
+        <attr name="value" format="float" />
     </declare-styleable>
 </resources>

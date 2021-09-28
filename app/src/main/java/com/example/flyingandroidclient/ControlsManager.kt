@@ -62,4 +62,20 @@ class ControlsManager(private val connection: BluetoothConnection) {
         inclineChangeRateFilteringCoef.value = value
         sendOneFloatControl(Controls.SET_INCL_CH_RATE_FILTERING_COEF, value)
     }
+    val inclineFilteringCoef = MutableLiveData<Float>(0f)
+    fun setInclineFilteringCoef(value: Float) {
+        inclineFilteringCoef.value = value
+        sendOneFloatControl(Controls.SET_INCL_FILTERING_COEF, value)
+    }
+    val acceleration = MutableLiveData<Float>(0f)
+    fun setAcceleration(value: Float) {
+        acceleration.value = value
+        sendOneFloatControl(Controls.SET_ACCELERATION, value)
+        // Log.i("myinfo", "acceleration ${value}")
+    }
+    val direction = MutableLiveData<Float>(0f)
+    fun setDirection(value: Float) {
+        direction.value = value
+        sendOneFloatControl(Controls.SET_DIRECTION, value)
+    }
 }

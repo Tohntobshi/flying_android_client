@@ -44,6 +44,8 @@ class MainActivityViewModel: ViewModel() {
     val rollErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val pitchErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
     val rollErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
+    val yawSpeedErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
+    val yawSpeedErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
 
     private fun addToList(value: Float, mldlist: MutableLiveData<MutableList<Float>>) {
         val list = mldlist.value
@@ -100,7 +102,7 @@ class MainActivityViewModel: ViewModel() {
 
     private suspend fun onMessage (data: ByteArray): Unit {
         if (data.size < 1) return
-        if (data[0] == MessageTypes.INFO.ordinal.toByte() && data.size == 25) {
+        if (data[0] == MessageTypes.ERRORS_INFO.ordinal.toByte() && data.size == 25) {
             val currentPitchError = ByteBuffer.wrap(data, 1, 4).float
             val currentRollError = ByteBuffer.wrap(data, 5, 4).float
             val pitchErrorChangeRate = ByteBuffer.wrap(data, 9, 4).float
@@ -112,6 +114,8 @@ class MainActivityViewModel: ViewModel() {
                 addToList(currentRollError, rollErrors)
                 addToList(pitchErrorChangeRate, pitchErrorChangeRates)
                 addToList(rollErrorChangeRate, rollErrorChangeRates)
+                addToList(currentYawSpeedError, yawSpeedErrors)
+                addToList(yawSpeedErrorChangeRate, yawSpeedErrorChangeRates)
                 // do stuff
                 // Log.i("myinfo", "received perr ${currentPitchError} rerr ${currentRollError}")
             }

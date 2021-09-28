@@ -1,6 +1,7 @@
 package com.example.flyingandroidclient
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,14 @@ class PrimaryContolsFragment : Fragment() {
 
         binding.joystick.setPositionListener {
             model.controls.setPosition(it)
+            // Log.i("myinfo", "x ${it.x} y ${it.y}")
+        }
+        binding.joystick.setDirectionListener {
+            // Log.i("myinfo", "direction ${it}")
+            model.controls.setDirection(it)
+        }
+        binding.accelSlider.setValueChangedListener {
+            model.controls.setAcceleration(it)
         }
 
         return binding.root

@@ -29,6 +29,7 @@ class TweaksFragment : Fragment() {
         binding.sliderRollInt.setValueChangedListener { model.controls.setRollIntCoef(it) }
         binding.sliderAccTrust.setValueChangedListener { model.controls.setAccTrust(it) }
         binding.sliderInclChRFilt.setValueChangedListener { model.controls.setInclineChangeRateFilteringCoef(it) }
+        binding.sliderInclFilt.setValueChangedListener { model.controls.setInclineFilteringCoef(it) }
 
         return binding.root
     }

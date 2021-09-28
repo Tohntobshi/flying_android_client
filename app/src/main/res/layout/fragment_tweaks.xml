@@ -212,6 +212,25 @@
                     app:fractionDigits="3"
                     app:minValue="0"
                     app:maxValue="1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Incline Filtering"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderInclFilt"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.inclineFilteringCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0"
+                    app:maxValue="1"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
