@@ -1,5 +1,6 @@
 package com.example.flyingandroidclient
 
+import android.app.Application
 import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +25,7 @@ enum class Tabs {
     OPTIONS
 }
 
-class MainActivityViewModel: ViewModel() {
+class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 //    init {
 //        viewModelScope.launch {
 //            while (true) {
@@ -38,14 +39,20 @@ class MainActivityViewModel: ViewModel() {
 //    }
 
     private val connection = BluetoothConnection()
-    val controls = ControlsManager(connection)
+    val controls = ControlsManager(connection, application)
 
     val pitchErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val rollErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val pitchErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
     val rollErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
-    val yawSpeedErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
-    val yawSpeedErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
+    val heightErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
+    val heightErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
+
+    val frontLeft = MutableLiveData<Int>(0)
+    val frontRight = MutableLiveData<Int>(0)
+    val backLeft = MutableLiveData<Int>(0)
+    val backRight = MutableLiveData<Int>(0)
+    val currentHeightErr = MutableLiveData<Float>(0.0f)
 
     private fun addToList(value: Float, mldlist: MutableLiveData<MutableList<Float>>) {
         val list = mldlist.value
@@ -102,20 +109,31 @@ class MainActivityViewModel: ViewModel() {
 
     private suspend fun onMessage (data: ByteArray): Unit {
         if (data.size < 1) return
-        if (data[0] == MessageTypes.ERRORS_INFO.ordinal.toByte() && data.size == 25) {
+        if (data[0] == MessageTypes.ERRORS_INFO.ordinal.toByte() && data.size == (25 + 16)) {
             val currentPitchError = ByteBuffer.wrap(data, 1, 4).float
             val currentRollError = ByteBuffer.wrap(data, 5, 4).float
             val pitchErrorChangeRate = ByteBuffer.wrap(data, 9, 4).float
             val rollErrorChangeRate = ByteBuffer.wrap(data, 13, 4).float
-            val currentYawSpeedError = ByteBuffer.wrap(data, 17, 4).float
-            val yawSpeedErrorChangeRate = ByteBuffer.wrap(data, 21, 4).float
+            val currentHeightError = ByteBuffer.wrap(data, 17, 4).float
+            val heightErrorChangeRate = ByteBuffer.wrap(data, 21, 4).float
+
+            val frontLeftVal = ByteBuffer.wrap(data, 25, 4).int
+            val frontRightVal = ByteBuffer.wrap(data, 29, 4).int
+            val backLeftVal = ByteBuffer.wrap(data, 33, 4).int
+            val backRightVal = ByteBuffer.wrap(data, 37, 4).int
+
             withContext(Dispatchers.Main) {
                 addToList(currentPitchError, pitchErrors)
                 addToList(currentRollError, rollErrors)
                 addToList(pitchErrorChangeRate, pitchErrorChangeRates)
                 addToList(rollErrorChangeRate, rollErrorChangeRates)
-                addToList(currentYawSpeedError, yawSpeedErrors)
-                addToList(yawSpeedErrorChangeRate, yawSpeedErrorChangeRates)
+                addToList(currentHeightError, heightErrors)
+                addToList(heightErrorChangeRate, heightErrorChangeRates)
+                frontLeft.value = frontLeftVal
+                frontRight.value = frontRightVal
+                backLeft.value = backLeftVal
+                backRight.value = backRightVal
+                currentHeightErr.value = currentHeightError
                 // do stuff
                 // Log.i("myinfo", "received perr ${currentPitchError} rerr ${currentRollError}")
             }

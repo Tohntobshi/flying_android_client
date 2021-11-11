@@ -100,6 +100,105 @@
                     app:fractionDigits="3"
                     app:minValue="0"
                     app:maxValue="1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Base acceleration"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderBaseAccel"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.baseAcceleartion}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0"
+                    app:maxValue="1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Height err"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp"/>
+                <com.example.flyingandroidclient.Plot
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:plotData="@{viewmodel.heightErrors}"
+                    app:valueRange="1.0" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Height P"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderHeightProp"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.heightPropCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Height I"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderHeightInt"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.heightIntCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{`fl ` + viewmodel.frontLeft + ` fr ` + viewmodel.frontRight}"
+                    tools:text="fl 1000 fr 1000"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{`bl ` + viewmodel.backLeft + ` br ` + viewmodel.backRight}"
+                    tools:text="bl 1000 br 1000"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{`desired height ` + viewmodel.controls.acceleration * 4.0f}"
+                    tools:text="desired height 0"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{`current height err ` + viewmodel.currentHeightErr}"
+                    tools:text="current height err 0"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="40dp"
@@ -231,6 +330,58 @@
                     app:fractionDigits="3"
                     app:minValue="0"
                     app:maxValue="1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Height err change rate"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp"/>
+                <com.example.flyingandroidclient.Plot
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:plotData="@{viewmodel.heightErrorChangeRates}"
+                    app:valueRange="4.0" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Height D"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp" />
+                <com.example.flyingandroidclient.Slider
+                    android:id="@+id/sliderHeightDer"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    app:position="@{viewmodel.controls.heightDerCoef}"
+                    app:orientation="horizontal"
+                    app:positionChangeMultiplier="0.1"
+                    app:fractionDigits="3"
+                    app:minValue="0" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Restore"
+                    android:onClick="@{() -> viewmodel.controls.restoreSettings()}" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Save"
+                    android:onClick="@{() -> viewmodel.controls.saveCurrentSettings()}" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Send"
+                    android:onClick="@{() -> viewmodel.controls.sendCurrentSettings()}" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

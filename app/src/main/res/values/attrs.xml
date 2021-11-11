@@ -1,6 +1,7 @@
 <resources>
     <declare-styleable name="Plot">
         <attr name="plotData" format="reference" />
+        <attr name="valueRange" format="float" />
     </declare-styleable>
     <declare-styleable name="Joystick">
         <attr name="direction" format="float" />

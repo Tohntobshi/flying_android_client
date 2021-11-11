@@ -30,6 +30,11 @@ class TweaksFragment : Fragment() {
         binding.sliderAccTrust.setValueChangedListener { model.controls.setAccTrust(it) }
         binding.sliderInclChRFilt.setValueChangedListener { model.controls.setInclineChangeRateFilteringCoef(it) }
         binding.sliderInclFilt.setValueChangedListener { model.controls.setInclineFilteringCoef(it) }
+        binding.sliderBaseAccel.setValueChangedListener { model.controls.setBaseAcceleration(it) }
+
+        binding.sliderHeightProp.setValueChangedListener { model.controls.setHeightPropCoef(it) }
+        binding.sliderHeightDer.setValueChangedListener { model.controls.setHeightDerCoef(it) }
+        binding.sliderHeightInt.setValueChangedListener { model.controls.setHeightIntCoef(it) }
 
         return binding.root
     }
