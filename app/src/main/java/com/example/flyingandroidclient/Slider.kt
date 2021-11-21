@@ -115,6 +115,7 @@ class Slider @JvmOverloads constructor(
         if (e.action === MotionEvent.ACTION_UP) {
             dragged = false
             parent.requestDisallowInterceptTouchEvent(false)
+            invalidate()
             return true
         }
         val touchPosition = if (isVertical) e.getY(0) else e.getX(0)

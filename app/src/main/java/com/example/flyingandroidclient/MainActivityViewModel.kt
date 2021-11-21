@@ -2,6 +2,7 @@ package com.example.flyingandroidclient
 
 import android.app.Application
 import android.bluetooth.BluetoothDevice
+import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -47,12 +48,15 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val rollErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
     val heightErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val heightErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
+    val yawSpErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
 
     val frontLeft = MutableLiveData<Int>(0)
     val frontRight = MutableLiveData<Int>(0)
     val backLeft = MutableLiveData<Int>(0)
     val backRight = MutableLiveData<Int>(0)
     val currentHeightErr = MutableLiveData<Float>(0.0f)
+    val sensorLoopFreq = MutableLiveData<Float>(0.0f)
+    val pidLoopFreq = MutableLiveData<Float>(0.0f)
 
     private fun addToList(value: Float, mldlist: MutableLiveData<MutableList<Float>>) {
         val list = mldlist.value
@@ -109,7 +113,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     private suspend fun onMessage (data: ByteArray): Unit {
         if (data.size < 1) return
-        if (data[0] == MessageTypes.ERRORS_INFO.ordinal.toByte() && data.size == (25 + 16)) {
+        if (data[0] == MessageTypes.ERRORS_INFO.ordinal.toByte() && data.size == (25 + 16 + 4 + 8)) {
             val currentPitchError = ByteBuffer.wrap(data, 1, 4).float
             val currentRollError = ByteBuffer.wrap(data, 5, 4).float
             val pitchErrorChangeRate = ByteBuffer.wrap(data, 9, 4).float
@@ -122,6 +126,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             val backLeftVal = ByteBuffer.wrap(data, 33, 4).int
             val backRightVal = ByteBuffer.wrap(data, 37, 4).int
 
+            val currentYawSpError = ByteBuffer.wrap(data, 41, 4).float
+            val sensorLoopFreq_ = ByteBuffer.wrap(data, 45, 4).float
+            val pidLoopFreq_ = ByteBuffer.wrap(data, 49, 4).float
+
             withContext(Dispatchers.Main) {
                 addToList(currentPitchError, pitchErrors)
                 addToList(currentRollError, rollErrors)
@@ -129,11 +137,14 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 addToList(rollErrorChangeRate, rollErrorChangeRates)
                 addToList(currentHeightError, heightErrors)
                 addToList(heightErrorChangeRate, heightErrorChangeRates)
+                addToList(currentYawSpError, yawSpErrors)
                 frontLeft.value = frontLeftVal
                 frontRight.value = frontRightVal
                 backLeft.value = backLeftVal
                 backRight.value = backRightVal
                 currentHeightErr.value = currentHeightError
+                sensorLoopFreq.value = sensorLoopFreq_
+                pidLoopFreq.value = pidLoopFreq_
                 // do stuff
                 // Log.i("myinfo", "received perr ${currentPitchError} rerr ${currentRollError}")
             }

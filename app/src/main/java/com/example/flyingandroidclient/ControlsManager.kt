@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import java.nio.ByteBuffer
+import kotlin.math.roundToInt
 
 class ControlsManager(private val connection: BluetoothConnection, private val application: Application) {
     private val sharedPref = application.getSharedPreferences("mysettings", Context.MODE_PRIVATE)
@@ -25,6 +26,19 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         data[0] = MessageTypes.CONTROLS.ordinal.toByte()
         data[1] = control.ordinal.toByte()
         ByteBuffer.wrap(data, 2, 4).putFloat(value)
+        connection.send(data)
+    }
+    private fun sendOneIntControl(control: Controls, value: Int) {
+        val data = ByteArray(6)
+        data[0] = MessageTypes.CONTROLS.ordinal.toByte()
+        data[1] = control.ordinal.toByte()
+        ByteBuffer.wrap(data, 2, 4).putInt(value)
+        connection.send(data)
+    }
+    private fun sendControl(control: Controls) {
+        val data = ByteArray(2)
+        data[0] = MessageTypes.CONTROLS.ordinal.toByte()
+        data[1] = control.ordinal.toByte()
         connection.send(data)
     }
     val pitchPropCoef = MutableLiveData<Float>(0f)
@@ -104,6 +118,52 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         heightIntCoef.value = value
         sendOneFloatControl(Controls.SET_HEIGHT_INT_COEF, value)
     }
+
+    val yawSpPropCoef = MutableLiveData<Float>(0f);
+    fun setYawSpPropCoef(value: Float) {
+        yawSpPropCoef.value = value
+        sendOneFloatControl(Controls.SET_YAW_SP_PROP_COEF, value)
+    }
+    val yawSpDerCoef = MutableLiveData<Float>(0f);
+    fun setYawSpDerCoef(value: Float) {
+        yawSpDerCoef.value = value
+        sendOneFloatControl(Controls.SET_YAW_SP_DER_COEF, value)
+    }
+    val yawSpIntCoef = MutableLiveData<Float>(0f);
+    fun setYawSpIntCoef(value: Float) {
+        yawSpIntCoef.value = value
+        sendOneFloatControl(Controls.SET_YAW_SP_INT_COEF, value)
+    }
+    val yawSpFilteringCoef = MutableLiveData<Float>(0f)
+    fun setYawSpFilteringCoef(value: Float) {
+        yawSpFilteringCoef.value = value
+        sendOneFloatControl(Controls.SET_YAW_SP_FILTERING_COEF, value)
+    }
+
+    val turnOffInclineAngle = MutableLiveData<Float>(30f);
+    fun setTurnOffInclineAngle(value: Float) {
+        turnOffInclineAngle.value = value
+        sendOneFloatControl(Controls.SET_TURN_OFF_INCLINE_ANGLE, value)
+    }
+    val pidLoopDelay = MutableLiveData<Int>(20);
+    fun setPIDLoopDelay(value: Int) {
+        pidLoopDelay.value = value
+        sendOneIntControl(Controls.SET_PID_LOOP_DELAY, value)
+    }
+    val imuLPFMode = MutableLiveData<Int>(3);
+    fun setImuLPFMode(value: Int) {
+        imuLPFMode.value = value
+        sendOneIntControl(Controls.SET_IMU_LPF_MODE, value)
+    }
+    fun resetTurnOffTrigger() {
+        sendControl(Controls.RESET_TURN_OFF_TRIGGER)
+    }
+    fun startSendingInfo() {
+        sendControl(Controls.START_SENDING_INFO)
+    }
+    fun stopSendingInfo() {
+        sendControl(Controls.STOP_SENDING_INFO)
+    }
     fun saveCurrentSettings() {
         with (sharedPref.edit()) {
             putFloat("PITCH_PROP_COEF", pitchPropCoef.value!!)
@@ -119,6 +179,13 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
             putFloat("HEIGHT_PROP_COEF", heightPropCoef.value!!)
             putFloat("HEIGHT_DER_COEF", heightDerCoef.value!!)
             putFloat("HEIGHT_INT_COEF", heightIntCoef.value!!)
+            putFloat("TURN_OFF_INCLINE_ANGLE", turnOffInclineAngle.value!!)
+            putFloat("YAW_SP_FILTERING_COEF", yawSpFilteringCoef.value!!)
+            putFloat("YAW_SP_PROP_COEF", yawSpPropCoef.value!!)
+            putFloat("YAW_SP_DER_COEF", yawSpDerCoef.value!!)
+            putFloat("YAW_SP_INT_COEF", yawSpIntCoef.value!!)
+            putInt("PID_LOOP_DELAY", pidLoopDelay.value!!)
+            putInt("IMU_LPF_MODE", imuLPFMode.value!!)
             apply()
         }
     }
@@ -136,6 +203,13 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         heightPropCoef.value = sharedPref.getFloat("HEIGHT_PROP_COEF", 0.0f)
         heightDerCoef.value = sharedPref.getFloat("HEIGHT_DER_COEF", 0.0f)
         heightIntCoef.value = sharedPref.getFloat("HEIGHT_INT_COEF", 0.0f)
+        turnOffInclineAngle.value = sharedPref.getFloat("TURN_OFF_INCLINE_ANGLE", 30.0f)
+        yawSpFilteringCoef.value = sharedPref.getFloat("YAW_SP_FILTERING_COEF", 0.0f)
+        yawSpPropCoef.value = sharedPref.getFloat("YAW_SP_PROP_COEF", 0.0f)
+        yawSpDerCoef.value = sharedPref.getFloat("YAW_SP_DER_COEF", 0.0f)
+        yawSpIntCoef.value = sharedPref.getFloat("YAW_SP_INT_COEF", 0.0f)
+        pidLoopDelay.value = sharedPref.getInt("PID_LOOP_DELAY", 20)
+        imuLPFMode.value = sharedPref.getInt("IMU_LPF_MODE", 3)
     }
     fun sendCurrentSettings() {
         sendOneFloatControl(Controls.SET_PITCH_PROP_COEF, pitchPropCoef.value!!)
@@ -151,5 +225,12 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         sendOneFloatControl(Controls.SET_HEIGHT_PROP_COEF, heightPropCoef.value!!)
         sendOneFloatControl(Controls.SET_HEIGHT_DER_COEF, heightDerCoef.value!!)
         sendOneFloatControl(Controls.SET_HEIGHT_INT_COEF, heightIntCoef.value!!)
+        sendOneFloatControl(Controls.SET_TURN_OFF_INCLINE_ANGLE, turnOffInclineAngle.value!!)
+        sendOneFloatControl(Controls.SET_YAW_SP_FILTERING_COEF, yawSpFilteringCoef.value!!)
+        sendOneFloatControl(Controls.SET_YAW_SP_PROP_COEF, yawSpPropCoef.value!!)
+        sendOneFloatControl(Controls.SET_YAW_SP_DER_COEF, yawSpDerCoef.value!!)
+        sendOneFloatControl(Controls.SET_YAW_SP_INT_COEF, yawSpIntCoef.value!!)
+        sendOneIntControl(Controls.SET_PID_LOOP_DELAY, pidLoopDelay.value!!)
+        sendOneIntControl(Controls.SET_IMU_LPF_MODE, imuLPFMode.value!!)
     }
 }
