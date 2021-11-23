@@ -37,6 +37,5 @@ enum class Controls {
     SET_YAW_SP_DER_COEF,
     SET_YAW_SP_FILTERING_COEF,
 
-    SET_PID_LOOP_DELAY,
     SET_IMU_LPF_MODE
 };

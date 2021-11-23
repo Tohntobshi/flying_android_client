@@ -42,7 +42,6 @@ class TweaksFragment : Fragment() {
         binding.sliderYawSpDer.setValueChangedListener { model.controls.setYawSpDerCoef(it) }
         binding.sliderYawSpInt.setValueChangedListener { model.controls.setYawSpIntCoef(it) }
         binding.sliderYawSpFilt.setValueChangedListener { model.controls.setYawSpFilteringCoef(it) }
-        binding.sliderPidLoopDelay.setValueChangedListener { model.controls.setPIDLoopDelay(it.roundToInt()) }
         binding.sliderImuLPFMode.setValueChangedListener { model.controls.setImuLPFMode(it.roundToInt()) }
         model.controls.startSendingInfo()
         return binding.root

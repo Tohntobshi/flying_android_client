@@ -145,11 +145,6 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         turnOffInclineAngle.value = value
         sendOneFloatControl(Controls.SET_TURN_OFF_INCLINE_ANGLE, value)
     }
-    val pidLoopDelay = MutableLiveData<Int>(20);
-    fun setPIDLoopDelay(value: Int) {
-        pidLoopDelay.value = value
-        sendOneIntControl(Controls.SET_PID_LOOP_DELAY, value)
-    }
     val imuLPFMode = MutableLiveData<Int>(3);
     fun setImuLPFMode(value: Int) {
         imuLPFMode.value = value
@@ -184,7 +179,6 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
             putFloat("YAW_SP_PROP_COEF", yawSpPropCoef.value!!)
             putFloat("YAW_SP_DER_COEF", yawSpDerCoef.value!!)
             putFloat("YAW_SP_INT_COEF", yawSpIntCoef.value!!)
-            putInt("PID_LOOP_DELAY", pidLoopDelay.value!!)
             putInt("IMU_LPF_MODE", imuLPFMode.value!!)
             apply()
         }
@@ -208,7 +202,6 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         yawSpPropCoef.value = sharedPref.getFloat("YAW_SP_PROP_COEF", 0.0f)
         yawSpDerCoef.value = sharedPref.getFloat("YAW_SP_DER_COEF", 0.0f)
         yawSpIntCoef.value = sharedPref.getFloat("YAW_SP_INT_COEF", 0.0f)
-        pidLoopDelay.value = sharedPref.getInt("PID_LOOP_DELAY", 20)
         imuLPFMode.value = sharedPref.getInt("IMU_LPF_MODE", 3)
     }
     fun sendCurrentSettings() {
@@ -230,7 +223,6 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         sendOneFloatControl(Controls.SET_YAW_SP_PROP_COEF, yawSpPropCoef.value!!)
         sendOneFloatControl(Controls.SET_YAW_SP_DER_COEF, yawSpDerCoef.value!!)
         sendOneFloatControl(Controls.SET_YAW_SP_INT_COEF, yawSpIntCoef.value!!)
-        sendOneIntControl(Controls.SET_PID_LOOP_DELAY, pidLoopDelay.value!!)
         sendOneIntControl(Controls.SET_IMU_LPF_MODE, imuLPFMode.value!!)
     }
 }

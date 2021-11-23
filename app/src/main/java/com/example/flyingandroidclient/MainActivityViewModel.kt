@@ -54,9 +54,46 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val frontRight = MutableLiveData<Int>(0)
     val backLeft = MutableLiveData<Int>(0)
     val backRight = MutableLiveData<Int>(0)
-    val currentHeightErr = MutableLiveData<Float>(0.0f)
-    val sensorLoopFreq = MutableLiveData<Float>(0.0f)
+    val heightErr = MutableLiveData<Float>(0.0f)
+    val pitchErr = MutableLiveData<Float>(0.0f)
+    val rollErr = MutableLiveData<Float>(0.0f)
+    val yawSpErr = MutableLiveData<Float>(0.0f)
+    val heightErrDer = MutableLiveData<Float>(0.0f)
+    val pitchErrDer = MutableLiveData<Float>(0.0f)
+    val rollErrDer = MutableLiveData<Float>(0.0f)
+    val heightErrInt = MutableLiveData<Float>(0.0f)
+    val pitchErrInt = MutableLiveData<Float>(0.0f)
+    val rollErrInt = MutableLiveData<Float>(0.0f)
+    val yawSpErrInt = MutableLiveData<Float>(0.0f)
     val pidLoopFreq = MutableLiveData<Float>(0.0f)
+
+    val pitchPropInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.pitchPropCoef, pitchErr)) {
+        (it.first!! * it.second!!).toInt()
+    }
+    val pitchDerInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.pitchDerCoef, pitchErrDer)) {
+        (it.first!! * it.second!!).toInt()
+    }
+    val pitchIntInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.pitchIntCoef, pitchErrInt)) {
+        (it.first!! * it.second!!).toInt()
+    }
+    val rollPropInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.rollPropCoef, rollErr)) {
+        (it.first!! * it.second!!).toInt()
+    }
+    val rollDerInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.rollDerCoef, rollErrDer)) {
+        (it.first!! * it.second!!).toInt()
+    }
+    val rollIntInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.rollIntCoef, rollErrInt)) {
+        (it.first!! * it.second!!).toInt()
+    }
+    val heightPropInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.heightPropCoef, heightErr)) {
+        (it.first!! * it.second!! * 1000).toInt()
+    }
+    val heightDerInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.heightDerCoef, heightErrDer)) {
+        (it.first!! * it.second!! * 1000).toInt()
+    }
+    val heightIntInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.heightIntCoef, heightErrInt)) {
+        (it.first!! * it.second!! * 1000).toInt()
+    }
 
     private fun addToList(value: Float, mldlist: MutableLiveData<MutableList<Float>>) {
         val list = mldlist.value
@@ -113,7 +150,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     private suspend fun onMessage (data: ByteArray): Unit {
         if (data.size < 1) return
-        if (data[0] == MessageTypes.ERRORS_INFO.ordinal.toByte() && data.size == (25 + 16 + 4 + 8)) {
+        if (data[0] == MessageTypes.ERRORS_INFO.ordinal.toByte() && data.size == (25 + 16 + 4 + 4 + 16)) {
             val currentPitchError = ByteBuffer.wrap(data, 1, 4).float
             val currentRollError = ByteBuffer.wrap(data, 5, 4).float
             val pitchErrorChangeRate = ByteBuffer.wrap(data, 9, 4).float
@@ -127,8 +164,12 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             val backRightVal = ByteBuffer.wrap(data, 37, 4).int
 
             val currentYawSpError = ByteBuffer.wrap(data, 41, 4).float
-            val sensorLoopFreq_ = ByteBuffer.wrap(data, 45, 4).float
-            val pidLoopFreq_ = ByteBuffer.wrap(data, 49, 4).float
+            val pidLoopFreq_ = ByteBuffer.wrap(data, 45, 4).float
+
+            val currentPitchErrInt = ByteBuffer.wrap(data, 49, 4).float
+            val currentRollErrInt = ByteBuffer.wrap(data, 53, 4).float
+            val currentYawSpErrInt = ByteBuffer.wrap(data, 57, 4).float
+            val currentHeightErrInt = ByteBuffer.wrap(data, 61, 4).float
 
             withContext(Dispatchers.Main) {
                 addToList(currentPitchError, pitchErrors)
@@ -142,11 +183,25 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 frontRight.value = frontRightVal
                 backLeft.value = backLeftVal
                 backRight.value = backRightVal
-                currentHeightErr.value = currentHeightError
-                sensorLoopFreq.value = sensorLoopFreq_
                 pidLoopFreq.value = pidLoopFreq_
+
+                pitchErr.value = currentPitchError
+                rollErr.value = currentRollError
+                yawSpErr.value = currentYawSpError
+                heightErr.value = currentHeightError
+
+                pitchErrDer.value = pitchErrorChangeRate
+                rollErrDer.value = rollErrorChangeRate
+                heightErrDer.value = heightErrorChangeRate
+
+                pitchErrInt.value = currentPitchErrInt
+                rollErrInt.value = currentRollErrInt
+                yawSpErrInt.value = currentYawSpErrInt
+                heightErrInt.value = currentHeightErrInt
+
+
                 // do stuff
-                // Log.i("myinfo", "received perr ${currentPitchError} rerr ${currentRollError}")
+                // Log.i("myinfo", "height err ${currentHeightError} ${controls.heightPropCoef.value}")
             }
             return
         }
