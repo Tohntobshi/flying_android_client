@@ -43,6 +43,8 @@ class TweaksFragment : Fragment() {
         binding.sliderYawSpInt.setValueChangedListener { model.controls.setYawSpIntCoef(it) }
         binding.sliderYawSpFilt.setValueChangedListener { model.controls.setYawSpFilteringCoef(it) }
         binding.sliderImuLPFMode.setValueChangedListener { model.controls.setImuLPFMode(it.roundToInt()) }
+        binding.sliderPitchAdjust.setValueChangedListener { model.controls.setPitchAdjust(it) }
+        binding.sliderRollAdjust.setValueChangedListener { model.controls.setRollAdjust(it) }
         model.controls.startSendingInfo()
         return binding.root
     }

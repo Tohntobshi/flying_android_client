@@ -109,6 +109,61 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="&lt;B Pitch Adjust F&gt;"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp"
+                        android:layout_marginTop="10dp"/>
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderPitchAdjust"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.pitchAdjust}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="0.1"
+                        app:fractionDigits="3"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="&lt;L Roll Adjust R&gt;"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp"
+                        android:layout_marginTop="10dp"/>
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderRollAdjust"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.rollAdjust}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="0.1"
+                        app:fractionDigits="3"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal" >
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -706,6 +761,44 @@
                     android:gravity="center_horizontal"
                     android:textSize="16dp"
                     android:layout_marginTop="10dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Calibration"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="25dp"
+                    android:layout_marginTop="50dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+                    <Button
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:text="Calibrate esc"
+                        android:layout_gravity="bottom"
+                        android:onClick="@{() -> viewmodel.controls.calibrateESC()}" />
+                    <Button
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:text="Calibrate gyro"
+                        android:layout_gravity="bottom"
+                        android:onClick="@{() -> viewmodel.controls.calibrateGyro()}" />
+                    <Button
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:text="Calibrate accel"
+                        android:layout_gravity="bottom"
+                        android:onClick="@{() -> viewmodel.controls.calibrateAccelerometer()}" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 

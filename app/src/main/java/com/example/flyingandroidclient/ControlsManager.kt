@@ -159,6 +159,25 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
     fun stopSendingInfo() {
         sendControl(Controls.STOP_SENDING_INFO)
     }
+    fun calibrateESC() {
+        sendControl(Controls.CALIBRATE_ESC)
+    }
+    fun calibrateGyro() {
+        sendControl(Controls.CALIBRATE_GYRO)
+    }
+    fun calibrateAccelerometer() {
+        sendControl(Controls.CALIBRATE_ACC)
+    }
+    val pitchAdjust = MutableLiveData<Float>(0f);
+    fun setPitchAdjust(value: Float) {
+        pitchAdjust.value = value
+        sendOneFloatControl(Controls.SET_PITCH_ADJUST, value)
+    }
+    val rollAdjust = MutableLiveData<Float>(0f);
+    fun setRollAdjust(value: Float) {
+        rollAdjust.value = value
+        sendOneFloatControl(Controls.SET_ROLL_ADJUST, value)
+    }
     fun saveCurrentSettings() {
         with (sharedPref.edit()) {
             putFloat("PITCH_PROP_COEF", pitchPropCoef.value!!)
@@ -180,6 +199,8 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
             putFloat("YAW_SP_DER_COEF", yawSpDerCoef.value!!)
             putFloat("YAW_SP_INT_COEF", yawSpIntCoef.value!!)
             putInt("IMU_LPF_MODE", imuLPFMode.value!!)
+            putFloat("PITCH_ADJUST", pitchAdjust.value!!)
+            putFloat("ROLL_ADJUST", rollAdjust.value!!)
             apply()
         }
     }
@@ -203,6 +224,8 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         yawSpDerCoef.value = sharedPref.getFloat("YAW_SP_DER_COEF", 0.0f)
         yawSpIntCoef.value = sharedPref.getFloat("YAW_SP_INT_COEF", 0.0f)
         imuLPFMode.value = sharedPref.getInt("IMU_LPF_MODE", 3)
+        pitchAdjust.value = sharedPref.getFloat("PITCH_ADJUST", 0.0f)
+        rollAdjust.value = sharedPref.getFloat("ROLL_ADJUST", 0.0f)
     }
     fun sendCurrentSettings() {
         sendOneFloatControl(Controls.SET_PITCH_PROP_COEF, pitchPropCoef.value!!)
@@ -224,5 +247,7 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         sendOneFloatControl(Controls.SET_YAW_SP_DER_COEF, yawSpDerCoef.value!!)
         sendOneFloatControl(Controls.SET_YAW_SP_INT_COEF, yawSpIntCoef.value!!)
         sendOneIntControl(Controls.SET_IMU_LPF_MODE, imuLPFMode.value!!)
+        sendOneFloatControl(Controls.SET_PITCH_ADJUST, pitchAdjust.value!!)
+        sendOneFloatControl(Controls.SET_ROLL_ADJUST, rollAdjust.value!!)
     }
 }
