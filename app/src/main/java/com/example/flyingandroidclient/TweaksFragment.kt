@@ -31,17 +31,15 @@ class TweaksFragment : Fragment() {
         binding.sliderRollDer.setValueChangedListener { model.controls.setRollDerCoef(it) }
         binding.sliderRollInt.setValueChangedListener { model.controls.setRollIntCoef(it) }
         binding.sliderAccTrust.setValueChangedListener { model.controls.setAccTrust(it) }
-        binding.sliderInclChRFilt.setValueChangedListener { model.controls.setInclineChangeRateFilteringCoef(it) }
-        binding.sliderInclFilt.setValueChangedListener { model.controls.setInclineFilteringCoef(it) }
+        binding.sliderMagTrust.setValueChangedListener { model.controls.setMagTrust(it) }
         binding.sliderBaseAccel.setValueChangedListener { model.controls.setBaseAcceleration(it) }
         binding.sliderHeightProp.setValueChangedListener { model.controls.setHeightPropCoef(it) }
         binding.sliderHeightDer.setValueChangedListener { model.controls.setHeightDerCoef(it) }
         binding.sliderHeightInt.setValueChangedListener { model.controls.setHeightIntCoef(it) }
         binding.sliderTurnOffInclineAngle.setValueChangedListener { model.controls.setTurnOffInclineAngle(it) }
-        binding.sliderYawSpProp.setValueChangedListener { model.controls.setYawSpPropCoef(it) }
-        binding.sliderYawSpDer.setValueChangedListener { model.controls.setYawSpDerCoef(it) }
-        binding.sliderYawSpInt.setValueChangedListener { model.controls.setYawSpIntCoef(it) }
-        binding.sliderYawSpFilt.setValueChangedListener { model.controls.setYawSpFilteringCoef(it) }
+        binding.sliderYawProp.setValueChangedListener { model.controls.setYawPropCoef(it) }
+        binding.sliderYawDer.setValueChangedListener { model.controls.setYawDerCoef(it) }
+        binding.sliderYawInt.setValueChangedListener { model.controls.setYawIntCoef(it) }
         binding.sliderImuLPFMode.setValueChangedListener { model.controls.setImuLPFMode(it.roundToInt()) }
         binding.sliderPitchAdjust.setValueChangedListener { model.controls.setPitchAdjust(it) }
         binding.sliderRollAdjust.setValueChangedListener { model.controls.setRollAdjust(it) }

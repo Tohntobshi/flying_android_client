@@ -332,7 +332,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Incline filtering"
+                android:text="Filtering"
                 android:textAlignment="center"
                 android:gravity="center_horizontal"
                 android:textSize="25dp"
@@ -362,26 +362,26 @@
                         android:layout_marginBottom="10dp"
                         app:position="@{viewmodel.controls.accTrust}"
                         app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
+                        app:positionChangeMultiplier="0.01"
                         app:fractionDigits="3"
                         app:minValue="0"
                         app:maxValue="1"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Incline Filtering"
+                        android:text="Mag trust"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp" />
                     <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderInclFilt"
+                        android:id="@+id/sliderMagTrust"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.inclineFilteringCoef}"
+                        app:position="@{viewmodel.controls.magTrust}"
                         app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
+                        app:positionChangeMultiplier="0.01"
                         app:fractionDigits="3"
                         app:minValue="0"
                         app:maxValue="1"/>
@@ -411,25 +411,6 @@
                         app:fractionDigits="0"
                         app:minValue="1"
                         app:maxValue="6"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Incline Der Filtering"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp" />
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderInclChRFilt"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.inclineChangeRateFilteringCoef}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"
-                        app:maxValue="1"/>
                 </LinearLayout>
             </LinearLayout>
             <TextView
@@ -603,42 +584,37 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="Yaw sp err"
-                        android:text="@{`Yaw sp err ` + viewmodel.yawSpErr}"
+                        tools:text="Yaw err"
+                        android:text="@{`Yaw err ` + viewmodel.yawErr}"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp"/>
                     <com.example.flyingandroidclient.Plot
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:plotData="@{viewmodel.yawSpErrors}"
+                        app:plotData="@{viewmodel.yawErrors}"
+                        app:valueRange="180.0" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Yaw err der"
+                        android:text="@{`Yaw err der ` + viewmodel.yawErrDer}"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp"/>
+                    <com.example.flyingandroidclient.Plot
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        app:plotData="@{viewmodel.yawErrorChangeRates}"
                         app:valueRange="90.0" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="Yaw sp err int"
-                        android:text="@{`Yaw sp err int ` + viewmodel.yawSpErrInt}"
+                        tools:text="Yaw err int"
+                        android:text="@{`Yaw err int ` + viewmodel.yawErrInt}"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Yaw sp Filter"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp" />
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderYawSpFilt"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.yawSpFilteringCoef}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -653,39 +629,39 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Yaw sp P I D"
+                        android:text="Yaw P I D"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp" />
                     <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderYawSpProp"
+                        android:id="@+id/sliderYawProp"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.yawSpPropCoef}"
+                        app:position="@{viewmodel.controls.yawPropCoef}"
                         app:orientation="horizontal"
                         app:positionChangeMultiplier="0.1"
                         app:fractionDigits="3"
                         app:minValue="0" />
                     <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderYawSpInt"
+                        android:id="@+id/sliderYawInt"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.yawSpIntCoef}"
+                        app:position="@{viewmodel.controls.yawIntCoef}"
                         app:orientation="horizontal"
                         app:positionChangeMultiplier="0.1"
                         app:fractionDigits="3"
                         app:minValue="0" />
                     <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderYawSpDer"
+                        android:id="@+id/sliderYawDer"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.yawSpDerCoef}"
+                        app:position="@{viewmodel.controls.yawDerCoef}"
                         app:orientation="horizontal"
                         app:positionChangeMultiplier="0.1"
                         app:fractionDigits="3"
@@ -772,37 +748,52 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:layout_marginTop="10dp">
-                    <Button
-                        android:layout_weight="1"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_margin="5dp"
-                        android:text="Calibrate esc"
-                        android:layout_gravity="bottom"
-                        android:onClick="@{() -> viewmodel.controls.calibrateESC()}" />
-                    <Button
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Button
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_margin="5dp"
+                            android:text="Calibrate esc"
+                            android:layout_gravity="bottom"
+                            android:onClick="@{() -> viewmodel.controls.calibrateESC()}" />
+                        <Button
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_margin="5dp"
+                            android:text="Calibrate gyro"
+                            android:layout_gravity="bottom"
+                            android:onClick="@{() -> viewmodel.controls.calibrateGyro()}" />
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_margin="5dp"
-                        android:text="Calibrate gyro"
-                        android:layout_gravity="bottom"
-                        android:onClick="@{() -> viewmodel.controls.calibrateGyro()}" />
-                    <Button
-                        android:layout_weight="1"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_margin="5dp"
-                        android:text="Calibrate accel"
-                        android:layout_gravity="bottom"
-                        android:onClick="@{() -> viewmodel.controls.calibrateAccelerometer()}" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Button
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_margin="5dp"
+                            android:text="Calibrate accel"
+                            android:layout_gravity="bottom"
+                            android:onClick="@{() -> viewmodel.controls.calibrateAccelerometer()}" />
+                        <Button
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_margin="5dp"
+                            android:text="Calibrate mag"
+                            android:layout_gravity="bottom"
+                            android:onClick="@{() -> viewmodel.controls.calibrateMag()}" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
-
     </ScrollView>
-
 </layout>

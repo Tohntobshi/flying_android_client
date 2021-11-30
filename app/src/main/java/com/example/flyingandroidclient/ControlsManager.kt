@@ -76,15 +76,10 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         accTrust.value = value
         sendOneFloatControl(Controls.SET_ACC_TRUST, value)
     }
-    val inclineChangeRateFilteringCoef = MutableLiveData<Float>(0f)
-    fun setInclineChangeRateFilteringCoef(value: Float) {
-        inclineChangeRateFilteringCoef.value = value
-        sendOneFloatControl(Controls.SET_INCL_CH_RATE_FILTERING_COEF, value)
-    }
-    val inclineFilteringCoef = MutableLiveData<Float>(0f)
-    fun setInclineFilteringCoef(value: Float) {
-        inclineFilteringCoef.value = value
-        sendOneFloatControl(Controls.SET_INCL_FILTERING_COEF, value)
+    val magTrust = MutableLiveData<Float>(0.1f)
+    fun setMagTrust(value: Float) {
+        magTrust.value = value
+        sendOneFloatControl(Controls.SET_MAG_TRUST, value)
     }
     val acceleration = MutableLiveData<Float>(0f)
     fun setAcceleration(value: Float) {
@@ -119,27 +114,21 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         sendOneFloatControl(Controls.SET_HEIGHT_INT_COEF, value)
     }
 
-    val yawSpPropCoef = MutableLiveData<Float>(0f);
-    fun setYawSpPropCoef(value: Float) {
-        yawSpPropCoef.value = value
-        sendOneFloatControl(Controls.SET_YAW_SP_PROP_COEF, value)
+    val yawPropCoef = MutableLiveData<Float>(0f);
+    fun setYawPropCoef(value: Float) {
+        yawPropCoef.value = value
+        sendOneFloatControl(Controls.SET_YAW_PROP_COEF, value)
     }
-    val yawSpDerCoef = MutableLiveData<Float>(0f);
-    fun setYawSpDerCoef(value: Float) {
-        yawSpDerCoef.value = value
-        sendOneFloatControl(Controls.SET_YAW_SP_DER_COEF, value)
+    val yawDerCoef = MutableLiveData<Float>(0f);
+    fun setYawDerCoef(value: Float) {
+        yawDerCoef.value = value
+        sendOneFloatControl(Controls.SET_YAW_DER_COEF, value)
     }
-    val yawSpIntCoef = MutableLiveData<Float>(0f);
-    fun setYawSpIntCoef(value: Float) {
-        yawSpIntCoef.value = value
-        sendOneFloatControl(Controls.SET_YAW_SP_INT_COEF, value)
+    val yawIntCoef = MutableLiveData<Float>(0f);
+    fun setYawIntCoef(value: Float) {
+        yawIntCoef.value = value
+        sendOneFloatControl(Controls.SET_YAW_INT_COEF, value)
     }
-    val yawSpFilteringCoef = MutableLiveData<Float>(0f)
-    fun setYawSpFilteringCoef(value: Float) {
-        yawSpFilteringCoef.value = value
-        sendOneFloatControl(Controls.SET_YAW_SP_FILTERING_COEF, value)
-    }
-
     val turnOffInclineAngle = MutableLiveData<Float>(30f);
     fun setTurnOffInclineAngle(value: Float) {
         turnOffInclineAngle.value = value
@@ -168,6 +157,9 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
     fun calibrateAccelerometer() {
         sendControl(Controls.CALIBRATE_ACC)
     }
+    fun calibrateMag() {
+        sendControl(Controls.CALIBRATE_MAG)
+    }
     val pitchAdjust = MutableLiveData<Float>(0f);
     fun setPitchAdjust(value: Float) {
         pitchAdjust.value = value
@@ -187,17 +179,15 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
             putFloat("ROLL_DER_COEF", rollDerCoef.value!!)
             putFloat("ROLL_INT_COEF", rollIntCoef.value!!)
             putFloat("ACC_TRUST", accTrust.value!!)
-            putFloat("INCL_CH_RATE_FILTERING_COEF", inclineChangeRateFilteringCoef.value!!)
-            putFloat("INCL_FILTERING_COEF", inclineFilteringCoef.value!!)
+            putFloat("MAG_TRUST", magTrust.value!!)
             putFloat("BASE_ACCELERATION", baseAcceleartion.value!!)
             putFloat("HEIGHT_PROP_COEF", heightPropCoef.value!!)
             putFloat("HEIGHT_DER_COEF", heightDerCoef.value!!)
             putFloat("HEIGHT_INT_COEF", heightIntCoef.value!!)
             putFloat("TURN_OFF_INCLINE_ANGLE", turnOffInclineAngle.value!!)
-            putFloat("YAW_SP_FILTERING_COEF", yawSpFilteringCoef.value!!)
-            putFloat("YAW_SP_PROP_COEF", yawSpPropCoef.value!!)
-            putFloat("YAW_SP_DER_COEF", yawSpDerCoef.value!!)
-            putFloat("YAW_SP_INT_COEF", yawSpIntCoef.value!!)
+            putFloat("YAW_PROP_COEF", yawPropCoef.value!!)
+            putFloat("YAW_DER_COEF", yawDerCoef.value!!)
+            putFloat("YAW_INT_COEF", yawIntCoef.value!!)
             putInt("IMU_LPF_MODE", imuLPFMode.value!!)
             putFloat("PITCH_ADJUST", pitchAdjust.value!!)
             putFloat("ROLL_ADJUST", rollAdjust.value!!)
@@ -211,18 +201,16 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         rollPropCoef.value = sharedPref.getFloat("ROLL_PROP_COEF", 0.0f)
         rollDerCoef.value = sharedPref.getFloat("ROLL_DER_COEF", 0.0f)
         rollIntCoef.value = sharedPref.getFloat("ROLL_INT_COEF", 0.0f)
-        accTrust.value = sharedPref.getFloat("ACC_TRUST", 0.0f)
-        inclineChangeRateFilteringCoef.value = sharedPref.getFloat("INCL_CH_RATE_FILTERING_COEF", 0.0f)
-        inclineFilteringCoef.value = sharedPref.getFloat("INCL_FILTERING_COEF", 0.0f)
+        accTrust.value = sharedPref.getFloat("ACC_TRUST", 0.1f)
+        magTrust.value = sharedPref.getFloat("MAG_TRUST", 0.1f)
         baseAcceleartion.value = sharedPref.getFloat("BASE_ACCELERATION", 0.0f)
         heightPropCoef.value = sharedPref.getFloat("HEIGHT_PROP_COEF", 0.0f)
         heightDerCoef.value = sharedPref.getFloat("HEIGHT_DER_COEF", 0.0f)
         heightIntCoef.value = sharedPref.getFloat("HEIGHT_INT_COEF", 0.0f)
         turnOffInclineAngle.value = sharedPref.getFloat("TURN_OFF_INCLINE_ANGLE", 30.0f)
-        yawSpFilteringCoef.value = sharedPref.getFloat("YAW_SP_FILTERING_COEF", 0.0f)
-        yawSpPropCoef.value = sharedPref.getFloat("YAW_SP_PROP_COEF", 0.0f)
-        yawSpDerCoef.value = sharedPref.getFloat("YAW_SP_DER_COEF", 0.0f)
-        yawSpIntCoef.value = sharedPref.getFloat("YAW_SP_INT_COEF", 0.0f)
+        yawPropCoef.value = sharedPref.getFloat("YAW_PROP_COEF", 0.0f)
+        yawDerCoef.value = sharedPref.getFloat("YAW_DER_COEF", 0.0f)
+        yawIntCoef.value = sharedPref.getFloat("YAW_INT_COEF", 0.0f)
         imuLPFMode.value = sharedPref.getInt("IMU_LPF_MODE", 3)
         pitchAdjust.value = sharedPref.getFloat("PITCH_ADJUST", 0.0f)
         rollAdjust.value = sharedPref.getFloat("ROLL_ADJUST", 0.0f)
@@ -235,17 +223,15 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         sendOneFloatControl(Controls.SET_ROLL_DER_COEF, rollDerCoef.value!!)
         sendOneFloatControl(Controls.SET_ROLL_INT_COEF, rollIntCoef.value!!)
         sendOneFloatControl(Controls.SET_ACC_TRUST, accTrust.value!!)
-        sendOneFloatControl(Controls.SET_INCL_CH_RATE_FILTERING_COEF, inclineChangeRateFilteringCoef.value!!)
-        sendOneFloatControl(Controls.SET_INCL_FILTERING_COEF, inclineFilteringCoef.value!!)
+        sendOneFloatControl(Controls.SET_MAG_TRUST, magTrust.value!!)
         sendOneFloatControl(Controls.SET_BASE_ACCELERATION, baseAcceleartion.value!!)
         sendOneFloatControl(Controls.SET_HEIGHT_PROP_COEF, heightPropCoef.value!!)
         sendOneFloatControl(Controls.SET_HEIGHT_DER_COEF, heightDerCoef.value!!)
         sendOneFloatControl(Controls.SET_HEIGHT_INT_COEF, heightIntCoef.value!!)
         sendOneFloatControl(Controls.SET_TURN_OFF_INCLINE_ANGLE, turnOffInclineAngle.value!!)
-        sendOneFloatControl(Controls.SET_YAW_SP_FILTERING_COEF, yawSpFilteringCoef.value!!)
-        sendOneFloatControl(Controls.SET_YAW_SP_PROP_COEF, yawSpPropCoef.value!!)
-        sendOneFloatControl(Controls.SET_YAW_SP_DER_COEF, yawSpDerCoef.value!!)
-        sendOneFloatControl(Controls.SET_YAW_SP_INT_COEF, yawSpIntCoef.value!!)
+        sendOneFloatControl(Controls.SET_YAW_PROP_COEF, yawPropCoef.value!!)
+        sendOneFloatControl(Controls.SET_YAW_DER_COEF, yawDerCoef.value!!)
+        sendOneFloatControl(Controls.SET_YAW_INT_COEF, yawIntCoef.value!!)
         sendOneIntControl(Controls.SET_IMU_LPF_MODE, imuLPFMode.value!!)
         sendOneFloatControl(Controls.SET_PITCH_ADJUST, pitchAdjust.value!!)
         sendOneFloatControl(Controls.SET_ROLL_ADJUST, rollAdjust.value!!)
