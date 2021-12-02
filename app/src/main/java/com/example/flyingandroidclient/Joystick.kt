@@ -12,7 +12,7 @@ import kotlin.math.*
 class Joystick @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    private fun updateJoystick(x: Float, y: Float) {
+    private fun updateJoystick(x: Float, y: Float, isLast: Boolean) {
         val xFromCenter = x - centerX
         val yFromCenter = centerY - y
         var newPosition = PointF(xFromCenter, yFromCenter)
@@ -25,7 +25,7 @@ class Joystick @JvmOverloads constructor(
         position = normalizedPosition
         invalidate()
         for (callback in positionCallbacks) {
-            callback(normalizedPosition)
+            callback(normalizedPosition, isLast)
         }
     }
 
@@ -34,10 +34,6 @@ class Joystick @JvmOverloads constructor(
             dragStartDirection = direction
             dragStartTouchPosition = PointF(x, y)
             draggedDirection = direction
-        } else if (stop) {
-            dragStartDirection = 0f
-            draggedDirection = 0f
-            dragStartTouchPosition = PointF(0f, 0f)
         } else {
             val x1 = dragStartTouchPosition.x - centerX
             val y1 = centerY - dragStartTouchPosition.y
@@ -46,7 +42,12 @@ class Joystick @JvmOverloads constructor(
             val angle = atan2(x1*y2-y1*x2,x1*x2+y1*y2) * 180f / PI.toFloat()
             draggedDirection = clampDegrees(dragStartDirection - angle)
             for (callback in directionCallbacks) {
-                callback(draggedDirection)
+                callback(draggedDirection, stop)
+            }
+            if (stop) {
+                dragStartDirection = 0f
+                draggedDirection = 0f
+                dragStartTouchPosition = PointF(0f, 0f)
             }
         }
         invalidate()
@@ -60,7 +61,7 @@ class Joystick @JvmOverloads constructor(
             val lengthFromCenter = PointF(e.getX(pointerIndex) - centerX, centerY - e.getY(pointerIndex)).length()
             if(lengthFromCenter < 0.7f * radius && joystickPointerId == null) {
                 joystickPointerId = pointerId
-                updateJoystick(e.getX(pointerIndex), e.getY(pointerIndex))
+                updateJoystick(e.getX(pointerIndex), e.getY(pointerIndex), false)
                 return true
             }
             if (lengthFromCenter >= 0.7f * radius && lengthFromCenter <= radius && wheelPointerId == null) {
@@ -74,7 +75,7 @@ class Joystick @JvmOverloads constructor(
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP || action == MotionEvent.ACTION_CANCEL) {
             if (pointerId == joystickPointerId) {
                 joystickPointerId = null
-                updateJoystick(centerX, centerY)
+                updateJoystick(centerX, centerY, true)
                 return true
             }
             if (pointerId == wheelPointerId) {
@@ -86,7 +87,7 @@ class Joystick @JvmOverloads constructor(
         if (e.action === MotionEvent.ACTION_MOVE) {
             for(index in 0 until e.pointerCount) {
                 if (e.getPointerId(index) == wheelPointerId) updateWheel(e.getX(index), e.getY(index), false, false)
-                if (e.getPointerId(index) == joystickPointerId) updateJoystick(e.getX(index), e.getY(index))
+                if (e.getPointerId(index) == joystickPointerId) updateJoystick(e.getX(index), e.getY(index), false)
             }
             return true
         }
@@ -157,13 +158,13 @@ class Joystick @JvmOverloads constructor(
         canvas?.drawText("${if (directionToShowInt == 360) 0 else directionToShowInt}°", left + radius, top + strokeWidth, paint)
     }
 
-    private val positionCallbacks: MutableList<(PointF) -> Unit> = mutableListOf()
-    private val directionCallbacks: MutableList<(Float) -> Unit> = mutableListOf()
+    private val positionCallbacks: MutableList<(PointF, Boolean) -> Unit> = mutableListOf()
+    private val directionCallbacks: MutableList<(Float, Boolean) -> Unit> = mutableListOf()
 
-    fun setPositionListener(callback: (PointF) -> Unit) {
+    fun setPositionListener(callback: (PointF, Boolean) -> Unit) {
         positionCallbacks.add(callback)
     }
-    fun setDirectionListener(callback: (Float) -> Unit) {
+    fun setDirectionListener(callback: (Float, Boolean) -> Unit) {
         directionCallbacks.add(callback)
     }
 }

@@ -7,6 +7,7 @@ enum class MessageTypes {
 }
 
 enum class Controls {
+    UNSET,
     SET_PITCH_AND_ROLL,
     SET_DESIRED_HEIGHT_US,
     SET_DESIRED_HEIGHT_BAR,

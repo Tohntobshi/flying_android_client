@@ -1,5 +1,6 @@
 package com.example.flyingandroidclient
 
+import android.graphics.PointF
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -26,16 +27,16 @@ class PrimaryContolsFragment : Fragment() {
         binding.viewmodel = model
         binding.lifecycleOwner = this
 
-        binding.joystick.setPositionListener {
-            model.controls.setPosition(it)
+        binding.joystick.setPositionListener { point: PointF, isLast: Boolean ->
+            model.controls.setPosition(point, isLast)
             // Log.i("myinfo", "x ${it.x} y ${it.y}")
         }
-        binding.joystick.setDirectionListener {
+        binding.joystick.setDirectionListener { dir: Float, isLast: Boolean ->
             // Log.i("myinfo", "direction ${it}")
-            model.controls.setDirection(it)
+            model.controls.setDirection(dir, isLast)
         }
-        binding.accelSlider.setValueChangedListener {
-            model.controls.setAcceleration(it)
+        binding.accelSlider.setValueChangedListener { value: Float, isLast: Boolean ->
+            model.controls.setAcceleration(value, isLast)
         }
 
         return binding.root

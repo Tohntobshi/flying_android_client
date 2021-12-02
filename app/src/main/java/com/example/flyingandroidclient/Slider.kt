@@ -115,8 +115,7 @@ class Slider @JvmOverloads constructor(
         if (e.action === MotionEvent.ACTION_UP) {
             dragged = false
             parent.requestDisallowInterceptTouchEvent(false)
-            invalidate()
-            return true
+
         }
         val touchPosition = if (isVertical) e.getY(0) else e.getX(0)
         val viewLength = if (isVertical) height.toFloat() else width.toFloat()
@@ -132,14 +131,14 @@ class Slider @JvmOverloads constructor(
         if (maxValue != null && draggedPosition > maxValue!!) draggedPosition = maxValue!!
         invalidate()
         for (callback in callbacks) {
-            callback(draggedPosition)
+            callback(draggedPosition, e.action === MotionEvent.ACTION_UP)
         }
         return true
     }
 
-    private val callbacks: MutableList<(Float) -> Unit> = mutableListOf()
+    private val callbacks: MutableList<(Float, Boolean) -> Unit> = mutableListOf()
 
-    fun setValueChangedListener (callback: (Float) -> Unit) {
+    fun setValueChangedListener (callback: (Float, Boolean) -> Unit) {
         callbacks.add(callback)
     }
 

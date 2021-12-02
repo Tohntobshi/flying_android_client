@@ -62,7 +62,6 @@ class AccelerationSlider @JvmOverloads constructor(
         if (e.action === MotionEvent.ACTION_UP) {
             dragged = false
             parent.requestDisallowInterceptTouchEvent(false)
-            return true
         }
         val touchPosition = e.getY(0)
         val viewLength = height.toFloat()
@@ -78,14 +77,14 @@ class AccelerationSlider @JvmOverloads constructor(
         if (draggedValue < 0f) draggedValue = 0f
         invalidate()
         for (callback in callbacks) {
-            callback(draggedValue)
+            callback(draggedValue, e.action === MotionEvent.ACTION_UP)
         }
         return true
     }
 
-    private val callbacks: MutableList<(Float) -> Unit> = mutableListOf()
+    private val callbacks: MutableList<(Float, Boolean) -> Unit> = mutableListOf()
 
-    fun setValueChangedListener (callback: (Float) -> Unit) {
+    fun setValueChangedListener (callback: (Float, Boolean) -> Unit) {
         callbacks.add(callback)
     }
 
