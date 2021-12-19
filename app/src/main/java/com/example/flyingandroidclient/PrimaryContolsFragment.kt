@@ -9,10 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.flyingandroidclient.databinding.FragmentPrimaryContolsBinding
 import com.example.flyingandroidclient.databinding.FragmentTabsBinding
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PrimaryContolsFragment : Fragment() {
+    lateinit var model: MainActivityViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,14 +26,14 @@ class PrimaryContolsFragment : Fragment() {
         val binding: FragmentPrimaryContolsBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_primary_contols, container, false)
 
-        val model: MainActivityViewModel = ViewModelProvider(requireActivity()).get(
+        model = ViewModelProvider(requireActivity()).get(
                 MainActivityViewModel::class.java)
 
         binding.viewmodel = model
         binding.lifecycleOwner = this
 
         binding.joystick.setPositionListener { point: PointF, isLast: Boolean ->
-            model.controls.setPosition(point, isLast)
+            model.controls.move(point, isLast)
             // Log.i("myinfo", "x ${it.x} y ${it.y}")
         }
         binding.joystick.setDirectionListener { dir: Float, isLast: Boolean ->
@@ -40,5 +45,15 @@ class PrimaryContolsFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        model.controls.startSensorListening()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        model.controls.stopSensorListening()
     }
 }

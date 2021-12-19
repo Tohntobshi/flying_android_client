@@ -2,6 +2,9 @@ package com.example.flyingandroidclient
 
 import android.app.Application
 import android.bluetooth.BluetoothDevice
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +41,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 //            }
 //        }
 //    }
+
 
     private val connection = BluetoothConnection()
     val controls = ControlsManager(connection, application)

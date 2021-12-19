@@ -9,21 +9,33 @@
             type="com.example.flyingandroidclient.MainActivityViewModel" />
     </data>
     <LinearLayout
+        android:id="@+id/outerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_dark_background"
-        android:orientation="horizontal" >
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/contentFragment"
-            android:layout_height="match_parent"
+        android:gravity="center"
+        >
+        <LinearLayout
+            android:id="@+id/innerLayout"
             android:layout_width="0dp"
-            android:layout_weight="9" />
+            android:layout_height="0dp"
+            android:background="@color/cardview_dark_background"
+            android:orientation="horizontal"
+            android:rotation="90">
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/contentFragment"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="9" />
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/tabsFragment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:name="com.example.flyingandroidclient.TabsFragment" />
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/tabsFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:name="com.example.flyingandroidclient.TabsFragment" />
+
+
+        </LinearLayout>
     </LinearLayout>
+
 </layout>

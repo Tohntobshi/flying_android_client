@@ -3,14 +3,25 @@ package com.example.flyingandroidclient
 import android.app.Application
 import android.content.Context
 import android.graphics.PointF
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import java.nio.ByteBuffer
+import kotlin.math.PI
+import kotlin.math.cos
 import kotlin.math.roundToInt
+import kotlin.math.sin
 
-class ControlsManager(private val connection: BluetoothConnection, private val application: Application) {
+class ControlsManager(private val connection: BluetoothConnection, private val application: Application): SensorEventListener {
+    private var sensorManager: SensorManager = application.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    private var accSensor: Sensor? = null
+    private var magSensor: Sensor? = null
+
     private val reduceSendRateBy: Int = 8
     private var reduceSendCounter: Int = 0
     private val sharedPref = application.getSharedPreferences("mysettings", Context.MODE_PRIVATE)
@@ -19,6 +30,50 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
     private var lastFloatVal1: Float = 0f
     private var lastFloatVal2: Float = 0f
     private var lastIntVal: Int = 0
+
+    private val accelerometerReading = FloatArray(3)
+    private val magnetometerReading = FloatArray(3)
+    private val rotationMatrix = FloatArray(9)
+    private val orientationAngles = FloatArray(3)
+
+    init {
+        accSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        magSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+
+    }
+
+    fun startSensorListening() {
+        if (accSensor != null && magSensor != null) {
+            sensorManager.registerListener(this, accSensor, SensorManager.SENSOR_DELAY_UI)
+            sensorManager.registerListener(this, magSensor, SensorManager.SENSOR_DELAY_UI)
+            Log.i("myinfo", "sensor is present")
+        }
+        else {
+            Log.i("myinfo", "no sensor")
+        }
+    }
+
+    fun stopSensorListening() {
+        if (accSensor != null && magSensor != null) {
+            sensorManager.unregisterListener(this)
+        }
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event == null) return
+        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+            System.arraycopy(event.values, 0, accelerometerReading, 0, accelerometerReading.size)
+        } else if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
+            System.arraycopy(event.values, 0, magnetometerReading, 0, magnetometerReading.size)
+        }
+        SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading)
+        SensorManager.getOrientation(rotationMatrix, orientationAngles)
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+
+    }
+
     private fun sendTwoFloatControl(control: Controls, value1: Float, value2: Float, noSkip: Boolean) {
         if (control == lastControl && lastFloatVal1 == value1 && lastFloatVal2 == value2) return
         if (reduceSendCounter == 0 || noSkip) {
@@ -67,8 +122,15 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         connection.send(data)
     }
 
-    fun setPosition(coord: PointF, isLast: Boolean) {
-        sendTwoFloatControl(Controls.SET_PITCH_AND_ROLL, coord.x, coord.y, isLast)
+    fun move(coord: PointF, isLast: Boolean) {
+        if (accSensor != null && magSensor != null) {
+            val yawRad = orientationAngles[0] + PI / 2.0f;
+            val x: Float = coord.x * cos(yawRad).toFloat() + coord.y * sin(yawRad).toFloat();
+            val y: Float = -coord.x * sin(yawRad).toFloat() + coord.y * cos(yawRad).toFloat();
+            sendTwoFloatControl(Controls.MOVE, x, y, isLast)
+            return
+        }
+        sendTwoFloatControl(Controls.MOVE, coord.x, coord.y, isLast)
     }
     val pitchPropCoef = MutableLiveData<Float>(0f)
     fun setPitchPropCoef(value: Float, isLast: Boolean) {
@@ -265,4 +327,6 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         sendOneFloatControl(Controls.SET_PITCH_ADJUST, pitchAdjust.value!!, true)
         sendOneFloatControl(Controls.SET_ROLL_ADJUST, rollAdjust.value!!, true)
     }
+
+
 }

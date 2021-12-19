@@ -43,12 +43,21 @@ class TweaksFragment : Fragment() {
         binding.sliderImuLPFMode.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setImuLPFMode(value.roundToInt(), isLast) }
         binding.sliderPitchAdjust.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPitchAdjust(value, isLast) }
         binding.sliderRollAdjust.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setRollAdjust(value, isLast) }
-        model.controls.startSendingInfo()
+
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        model.controls.startSendingInfo()
+    }
+
+    override fun onPause() {
+        super.onPause()
         model.controls.stopSendingInfo()
     }
 
