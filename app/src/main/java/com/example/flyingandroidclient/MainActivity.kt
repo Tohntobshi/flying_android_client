@@ -18,13 +18,26 @@ import androidx.lifecycle.lifecycleScope
 import com.example.flyingandroidclient.databinding.ActivityMainBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import android.os.PowerManager
+
+import android.os.PowerManager.WakeLock
+
+import android.R.attr.name
+
+
+
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var powerManager: PowerManager
+    private lateinit var wakeLock: WakeLock
     private lateinit var model: MainActivityViewModel
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        powerManager = getSystemService(POWER_SERVICE) as PowerManager
+        wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "myapp:mywakelocktag")
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         model = ViewModelProvider(this).get(MainActivityViewModel::class.java)
@@ -55,6 +68,16 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             updateViewAfterDelay()
         }
+        wakeLock.acquire()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        wakeLock.release()
+    }
+
+    override fun onBackPressed() {
+        // do nothing
     }
 
     private fun changeTab(tab: Tabs) {
