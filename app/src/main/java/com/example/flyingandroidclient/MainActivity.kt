@@ -7,9 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
@@ -21,11 +18,6 @@ import kotlinx.coroutines.launch
 import android.os.PowerManager
 
 import android.os.PowerManager.WakeLock
-
-import android.R.attr.name
-
-
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -82,10 +74,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun changeTab(tab: Tabs) {
         val fragmentClass = when(tab) {
-            Tabs.MAIN -> PrimaryContolsFragment::class.java
+            Tabs.MAIN -> PrimaryControlsFragment::class.java
             Tabs.TWEAKS -> TweaksFragment::class.java
             Tabs.OPTIONS -> OptionsFragment::class.java
         }
+
 
         supportFragmentManager.commit {
             replace(R.id.contentFragment, fragmentClass, null)

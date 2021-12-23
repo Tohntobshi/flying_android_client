@@ -43,7 +43,7 @@ class TweaksFragment : Fragment() {
         binding.sliderImuLPFMode.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setImuLPFMode(value.roundToInt(), isLast) }
         binding.sliderPitchAdjust.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPitchAdjust(value, isLast) }
         binding.sliderRollAdjust.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setRollAdjust(value, isLast) }
-
+        binding.sliderAccFiltering.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setAccFiltering(value, isLast) }
         return binding.root
     }
 
@@ -53,12 +53,12 @@ class TweaksFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        model.controls.startSendingInfo()
+        model.controls.startSendingSecondaryInfo()
     }
 
     override fun onPause() {
         super.onPause()
-        model.controls.stopSendingInfo()
+        model.controls.stopSendingSecondaryInfo()
     }
 
 }

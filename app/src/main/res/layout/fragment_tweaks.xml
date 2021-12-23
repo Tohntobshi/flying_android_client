@@ -174,7 +174,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{`Pitch err ` + viewmodel.pitchErr}"
+                        android:text="@{`Pitch err ` + viewmodel.info.pitchErr}"
                         tools:text="Pitch err"
                         android:textAlignment="center"
                         android:textSize="16dp"
@@ -182,24 +182,24 @@
                     <com.example.flyingandroidclient.Plot
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:plotData="@{viewmodel.pitchErrors}"/>
+                        app:plotData="@{viewmodel.info.pitchErrors}"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:text="Pitch err der"
-                        android:text="@{`Pitch err der ` + viewmodel.pitchErrDer}"
+                        android:text="@{`Pitch err der ` + viewmodel.info.pitchErrDer}"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp"/>
                     <com.example.flyingandroidclient.Plot
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:plotData="@{viewmodel.pitchErrorChangeRates}" />
+                        app:plotData="@{viewmodel.info.pitchErrorChangeRates}" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:text="Pitch err int"
-                        android:text="@{`Pitch err int ` + viewmodel.pitchErrInt}"
+                        android:text="@{`Pitch err int ` + viewmodel.info.pitchErrInt}"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp"/>
@@ -255,7 +255,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{`Roll err ` + viewmodel.rollErr}"
+                        android:text="@{`Roll err ` + viewmodel.info.rollErr}"
                         tools:text="Roll err"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
@@ -263,24 +263,24 @@
                     <com.example.flyingandroidclient.Plot
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:plotData="@{viewmodel.rollErrors}" />
+                        app:plotData="@{viewmodel.info.rollErrors}" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:text="Roll err der"
-                        android:text="@{`Roll err der ` + viewmodel.rollErrDer}"
+                        android:text="@{`Roll err der ` + viewmodel.info.rollErrDer}"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp" />
                     <com.example.flyingandroidclient.Plot
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:plotData="@{viewmodel.rollErrorChangeRates}" />
+                        app:plotData="@{viewmodel.info.rollErrorChangeRates}" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:text="Roll err int"
-                        android:text="@{`Roll err int ` + viewmodel.rollErrInt}"
+                        android:text="@{`Roll err int ` + viewmodel.info.rollErrInt}"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp" />
@@ -411,6 +411,25 @@
                         app:fractionDigits="0"
                         app:minValue="1"
                         app:maxValue="6"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Acc filtering"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp" />
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderAccFiltering"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.accFiltering}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="0.01"
+                        app:fractionDigits="3"
+                        app:minValue="0"
+                        app:maxValue="1"/>
                 </LinearLayout>
             </LinearLayout>
             <TextView
@@ -436,7 +455,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{`Height err ` + viewmodel.heightErr}"
+                        android:text="@{`Height err ` + viewmodel.info.heightErr}"
                         tools:text="Height err 0"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
@@ -444,12 +463,12 @@
                     <com.example.flyingandroidclient.Plot
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:plotData="@{viewmodel.heightErrors}"
+                        app:plotData="@{viewmodel.info.heightErrors}"
                         app:valueRange="1.0" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{`desired height ` + viewmodel.controls.acceleration * 4.0f}"
+                        android:text="@{`desired height ` + viewmodel.controls.height}"
                         tools:text="desired height 0"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
@@ -503,7 +522,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{`Height err der ` + viewmodel.heightErrDer}"
+                        android:text="@{`Height err der ` + viewmodel.info.heightErrDer}"
                         tools:text="Height err der 0"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
@@ -511,12 +530,12 @@
                     <com.example.flyingandroidclient.Plot
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:plotData="@{viewmodel.heightErrorChangeRates}"
+                        app:plotData="@{viewmodel.info.heightErrorChangeRates}"
                         app:valueRange="4.0" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{`Height err int ` + viewmodel.heightErrInt}"
+                        android:text="@{`Height err int ` + viewmodel.info.heightErrInt}"
                         tools:text="Height err int 0"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
@@ -585,33 +604,33 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:text="Yaw err"
-                        android:text="@{`Yaw err ` + viewmodel.yawErr}"
+                        android:text="@{`Yaw err ` + viewmodel.info.yawErr}"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp"/>
                     <com.example.flyingandroidclient.Plot
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:plotData="@{viewmodel.yawErrors}"
+                        app:plotData="@{viewmodel.info.yawErrors}"
                         app:valueRange="180.0" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:text="Yaw err der"
-                        android:text="@{`Yaw err der ` + viewmodel.yawErrDer}"
+                        android:text="@{`Yaw err der ` + viewmodel.info.yawErrDer}"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp"/>
                     <com.example.flyingandroidclient.Plot
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:plotData="@{viewmodel.yawErrorChangeRates}"
+                        app:plotData="@{viewmodel.info.yawErrorChangeRates}"
                         app:valueRange="90.0" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:text="Yaw err int"
-                        android:text="@{`Yaw err int ` + viewmodel.yawErrInt}"
+                        android:text="@{`Yaw err int ` + viewmodel.info.yawErrInt}"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp"/>
@@ -686,7 +705,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{`fl ` + viewmodel.frontLeft + ` fr ` + viewmodel.frontRight}"
+                    android:text="@{`fl ` + viewmodel.info.frontLeft + ` fr ` + viewmodel.info.frontRight}"
                     tools:text="fl 1000 fr 1000"
                     android:textAlignment="center"
                     android:gravity="center_horizontal"
@@ -695,7 +714,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{`bl ` + viewmodel.backLeft + ` br ` + viewmodel.backRight}"
+                    android:text="@{`bl ` + viewmodel.info.backLeft + ` br ` + viewmodel.info.backRight}"
                     tools:text="bl 1000 br 1000"
                     android:textAlignment="center"
                     android:gravity="center_horizontal"
@@ -731,7 +750,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{`pid loop freq ` + viewmodel.pidLoopFreq}"
+                    android:text="@{`pid loop freq ` + viewmodel.info.pidLoopFreq}"
                     tools:text="pid loop freq 50"
                     android:textAlignment="center"
                     android:gravity="center_horizontal"

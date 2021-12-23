@@ -2,29 +2,23 @@ package com.example.flyingandroidclient
 
 import android.graphics.PointF
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import com.example.flyingandroidclient.databinding.FragmentPrimaryContolsBinding
-import com.example.flyingandroidclient.databinding.FragmentTabsBinding
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.flyingandroidclient.databinding.FragmentPrimaryControlsBinding
 
-class PrimaryContolsFragment : Fragment() {
+class PrimaryControlsFragment : Fragment() {
     lateinit var model: MainActivityViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentPrimaryContolsBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_primary_contols, container, false)
+        val binding: FragmentPrimaryControlsBinding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_primary_controls, container, false)
 
         model = ViewModelProvider(requireActivity()).get(
                 MainActivityViewModel::class.java)
@@ -40,8 +34,14 @@ class PrimaryContolsFragment : Fragment() {
             // Log.i("myinfo", "direction ${it}")
             model.controls.setDirection(dir, isLast)
         }
-        binding.accelSlider.setValueChangedListener { value: Float, isLast: Boolean ->
-            model.controls.setAcceleration(value, isLast)
+        binding.accelSlider.setHeightChangedListener() { value: Float, isLast: Boolean ->
+            model.controls.setHeight(value, isLast)
+        }
+        binding.accelSlider.setModeChangedListener {
+            model.onAccSliderModeChange(it)
+        }
+        binding.accelSlider.setRelativeAccelerationChangedListener {value: Float, isLast: Boolean ->
+            model.controls.setRelativeAcceleration(value, isLast)
         }
 
         return binding.root
@@ -50,10 +50,12 @@ class PrimaryContolsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         model.controls.startSensorListening()
+        model.controls.startSendingPrimaryInfo()
     }
 
     override fun onPause() {
         super.onPause()
         model.controls.stopSensorListening()
+        model.controls.stopSendingPrimaryInfo()
     }
 }

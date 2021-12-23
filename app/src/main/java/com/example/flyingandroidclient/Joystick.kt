@@ -1,9 +1,12 @@
 package com.example.flyingandroidclient
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.TypeEvaluator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
@@ -15,11 +18,11 @@ class Joystick @JvmOverloads constructor(
     private fun updateJoystick(x: Float, y: Float, isLast: Boolean) {
         val xFromCenter = x - centerX
         val yFromCenter = centerY - y
-        var newPosition = PointF(xFromCenter, yFromCenter)
-        val newPosLegth = newPosition.length()
-        if (newPosLegth > maxJoystickMovement) {
-            newPosition.x = newPosition.x * maxJoystickMovement / newPosLegth
-            newPosition.y = newPosition.y * maxJoystickMovement / newPosLegth
+        val newPosition = PointF(xFromCenter, yFromCenter)
+        val newPosLength = newPosition.length()
+        if (newPosLength > maxJoystickMovement) {
+            newPosition.x = newPosition.x * maxJoystickMovement / newPosLength
+            newPosition.y = newPosition.y * maxJoystickMovement / newPosLength
         }
         val normalizedPosition = PointF(newPosition.x / maxJoystickMovement, newPosition.y / maxJoystickMovement)
         position = normalizedPosition
@@ -27,6 +30,12 @@ class Joystick @JvmOverloads constructor(
         for (callback in positionCallbacks) {
             callback(normalizedPosition, isLast)
         }
+    }
+
+    private fun getJoystickPositionAsScreenCoords(): PointF {
+        val x = position.x * maxJoystickMovement + centerX
+        val y = centerY - position.y * maxJoystickMovement
+        return PointF(x, y)
     }
 
     private fun updateWheel(x: Float, y: Float, start: Boolean, stop: Boolean) {
@@ -53,6 +62,19 @@ class Joystick @JvmOverloads constructor(
         invalidate()
     }
 
+    private class PointEvaluator : TypeEvaluator<PointF> {
+        override fun evaluate(fraction: Float, startValue: PointF, endValue: PointF): PointF {
+            val x = startValue.x + (endValue.x - startValue.x) * fraction
+            val y = startValue.y + (endValue.y - startValue.y) * fraction
+            return PointF(x, y)
+        }
+    }
+
+    private val pointEvaluator = PointEvaluator()
+
+    private var joystickStartAnimation: ValueAnimator? = null
+    private var joystickReleaseAnimation: ValueAnimator? = null
+
     override fun onTouchEvent(e: MotionEvent): Boolean {
         val pointerIndex: Int = e.actionIndex
         val pointerId: Int = e.getPointerId(pointerIndex)
@@ -61,7 +83,21 @@ class Joystick @JvmOverloads constructor(
             val lengthFromCenter = PointF(e.getX(pointerIndex) - centerX, centerY - e.getY(pointerIndex)).length()
             if(lengthFromCenter < 0.7f * radius && joystickPointerId == null) {
                 joystickPointerId = pointerId
-                updateJoystick(e.getX(pointerIndex), e.getY(pointerIndex), false)
+                joystickReleaseAnimation?.cancel()
+                joystickStartAnimation = ValueAnimator.ofObject(pointEvaluator, getJoystickPositionAsScreenCoords(), PointF(e.getX(pointerIndex), e.getY(pointerIndex))).apply {
+                    duration = 50
+                    addUpdateListener {
+                        val v = it.animatedValue as PointF
+                        updateJoystick(v.x, v.y, false)
+                    }
+                    addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            val v = (animation as ValueAnimator).animatedValue as PointF
+                            updateJoystick(v.x, v.y, true)
+                        }
+                    })
+                    start()
+                }
                 return true
             }
             if (lengthFromCenter >= 0.7f * radius && lengthFromCenter <= radius && wheelPointerId == null) {
@@ -75,7 +111,21 @@ class Joystick @JvmOverloads constructor(
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP || action == MotionEvent.ACTION_CANCEL) {
             if (pointerId == joystickPointerId) {
                 joystickPointerId = null
-                updateJoystick(centerX, centerY, true)
+                joystickStartAnimation?.cancel()
+                joystickReleaseAnimation = ValueAnimator.ofObject(pointEvaluator, PointF(e.getX(pointerIndex), e.getY(pointerIndex)) , PointF(centerX, centerY)).apply {
+                    duration = 100
+                    addUpdateListener {
+                        val v = it.animatedValue as PointF
+                        updateJoystick(v.x, v.y, false)
+                    }
+                    addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            val v = (animation as ValueAnimator).animatedValue as PointF
+                            updateJoystick(v.x, v.y, true)
+                        }
+                    })
+                    start()
+                }
                 return true
             }
             if (pointerId == wheelPointerId) {
@@ -84,10 +134,13 @@ class Joystick @JvmOverloads constructor(
                 return true
             }
         }
-        if (e.action === MotionEvent.ACTION_MOVE) {
+        if (e.action == MotionEvent.ACTION_MOVE) {
             for(index in 0 until e.pointerCount) {
                 if (e.getPointerId(index) == wheelPointerId) updateWheel(e.getX(index), e.getY(index), false, false)
-                if (e.getPointerId(index) == joystickPointerId) updateJoystick(e.getX(index), e.getY(index), false)
+                if (e.getPointerId(index) == joystickPointerId) {
+                    joystickStartAnimation?.cancel()
+                    updateJoystick(e.getX(index), e.getY(index), false)
+                }
             }
             return true
         }
@@ -137,6 +190,8 @@ class Joystick @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
     }
 
+    private val boundariesTmp = RectF()
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         val strokeWidth = radius / 7f
@@ -145,11 +200,15 @@ class Joystick @JvmOverloads constructor(
         paint.textSize = strokeWidth
         val directionToShow = if (wheelPointerId == null) direction else draggedDirection
         val directionToShowInt = directionToShow.roundToInt()
-        val boundaries = RectF(left + strokeWidth / 2f, top + strokeWidth / 2f, right - strokeWidth / 2f, bottom - strokeWidth / 2f)
+        boundariesTmp.left = left + strokeWidth / 2f
+        boundariesTmp.top = top + strokeWidth / 2f
+        boundariesTmp.right = right - strokeWidth / 2f
+        boundariesTmp.bottom = bottom - strokeWidth / 2f
+
         for (index in 0..89) {
             val deg = clampDegrees(4f * index + directionToShow)
             if (deg > 255 && deg < 285) continue
-            canvas?.drawArc(boundaries, deg, 1.5f, false, paint)
+            canvas?.drawArc(boundariesTmp, deg, 1.5f, false, paint)
         }
         paint.style = Paint.Style.FILL
         val x = centerX + position.x * maxJoystickMovement

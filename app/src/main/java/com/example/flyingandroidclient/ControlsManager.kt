@@ -1,5 +1,6 @@
 package com.example.flyingandroidclient
 
+import android.animation.TypeEvaluator
 import android.app.Application
 import android.content.Context
 import android.graphics.PointF
@@ -17,14 +18,14 @@ import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
 
-class ControlsManager(private val connection: BluetoothConnection, private val application: Application): SensorEventListener {
-    private var sensorManager: SensorManager = application.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+class ControlsManager(private val viewModel: MainActivityViewModel): SensorEventListener {
+    private var sensorManager: SensorManager = viewModel.appl.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private var accSensor: Sensor? = null
     private var magSensor: Sensor? = null
 
     private val reduceSendRateBy: Int = 8
     private var reduceSendCounter: Int = 0
-    private val sharedPref = application.getSharedPreferences("mysettings", Context.MODE_PRIVATE)
+    private val sharedPref = viewModel.appl.getSharedPreferences("mysettings", Context.MODE_PRIVATE)
 
     private var lastControl: Controls = Controls.UNSET
     private var lastFloatVal1: Float = 0f
@@ -85,7 +86,7 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
             data[1] = control.ordinal.toByte()
             ByteBuffer.wrap(data, 2, 4).putFloat(value1)
             ByteBuffer.wrap(data, 6, 4).putFloat(value2)
-            connection.send(data)
+            viewModel.connection.send(data)
         }
         reduceSendCounter = if (reduceSendCounter >= reduceSendRateBy - 1) 0 else reduceSendCounter + 1
     }
@@ -98,7 +99,7 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
             data[0] = MessageTypes.CONTROLS.ordinal.toByte()
             data[1] = control.ordinal.toByte()
             ByteBuffer.wrap(data, 2, 4).putFloat(value)
-            connection.send(data)
+            viewModel.connection.send(data)
         }
         reduceSendCounter = if (reduceSendCounter >= reduceSendRateBy - 1) 0 else reduceSendCounter + 1
     }
@@ -111,7 +112,7 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
             data[0] = MessageTypes.CONTROLS.ordinal.toByte()
             data[1] = control.ordinal.toByte()
             ByteBuffer.wrap(data, 2, 4).putInt(value)
-            connection.send(data)
+            viewModel.connection.send(data)
         }
         reduceSendCounter = if (reduceSendCounter >= reduceSendRateBy - 1) 0 else reduceSendCounter + 1
     }
@@ -119,8 +120,10 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         val data = ByteArray(2)
         data[0] = MessageTypes.CONTROLS.ordinal.toByte()
         data[1] = control.ordinal.toByte()
-        connection.send(data)
+        viewModel.connection.send(data)
     }
+
+
 
     fun move(coord: PointF, isLast: Boolean) {
         if (accSensor != null && magSensor != null) {
@@ -172,11 +175,15 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         magTrust.value = value
         sendOneFloatControl(Controls.SET_MAG_TRUST, value, isLast)
     }
-    val acceleration = MutableLiveData<Float>(0f)
-    fun setAcceleration(value: Float, isLast: Boolean) {
-        acceleration.value = value
-        sendOneFloatControl(Controls.SET_ACCELERATION, value, isLast)
-//            Log.i("myinfo", "acceleration ${value} last ${isLast}")
+    val accFiltering = MutableLiveData<Float>(0.95f)
+    fun setAccFiltering(value: Float, isLast: Boolean) {
+        accFiltering.value = value
+        sendOneFloatControl(Controls.SET_ACC_FILTERING, value, isLast)
+    }
+    val height = MutableLiveData<Float>(0f)
+    fun setHeight(value: Float, isLast: Boolean) {
+        height.value = value
+        sendOneFloatControl(Controls.SET_HEIGHT, value, isLast)
     }
     val direction = MutableLiveData<Float>(0f)
     fun setDirection(value: Float, isLast: Boolean) {
@@ -233,11 +240,29 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
     fun resetTurnOffTrigger() {
         sendControl(Controls.RESET_TURN_OFF_TRIGGER)
     }
-    fun startSendingInfo() {
-        sendControl(Controls.START_SENDING_INFO)
+    fun startSendingPrimaryInfo() {
+        sendControl(Controls.START_SENDING_PRIMARY_INFO)
     }
-    fun stopSendingInfo() {
-        sendControl(Controls.STOP_SENDING_INFO)
+    fun stopSendingPrimaryInfo() {
+        sendControl(Controls.STOP_SENDING_PRIMARY_INFO)
+    }
+    fun startSendingSecondaryInfo() {
+        sendControl(Controls.START_SENDING_SECONDARY_INFO)
+    }
+    fun stopSendingSecondaryInfo() {
+        sendControl(Controls.STOP_SENDING_SECONDARY_INFO)
+    }
+    fun resetLandingFlag() {
+        sendControl(Controls.RESET_LANDING_FLAG)
+    }
+    fun switchToRelativeAcceleration() {
+        sendControl(Controls.SWITCH_TO_RELATIVE_ACCELERATION)
+    }
+    val relativeAcceleration = MutableLiveData<Float>(0f);
+    fun setRelativeAcceleration(value: Float, isLast: Boolean)
+    {
+        relativeAcceleration.value = value
+        sendOneFloatControl(Controls.SET_RELATIVE_ACCELERATION, value, isLast)
     }
     fun calibrateESC() {
         sendControl(Controls.CALIBRATE_ESC)
@@ -282,6 +307,7 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
             putInt("IMU_LPF_MODE", imuLPFMode.value!!)
             putFloat("PITCH_ADJUST", pitchAdjust.value!!)
             putFloat("ROLL_ADJUST", rollAdjust.value!!)
+            putFloat("ACC_FILTERING", accFiltering.value!!)
             apply()
         }
     }
@@ -305,6 +331,7 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         imuLPFMode.value = sharedPref.getInt("IMU_LPF_MODE", 3)
         pitchAdjust.value = sharedPref.getFloat("PITCH_ADJUST", 0.0f)
         rollAdjust.value = sharedPref.getFloat("ROLL_ADJUST", 0.0f)
+        accFiltering.value = sharedPref.getFloat("ACC_FILTERING", 0.95f)
     }
     fun sendCurrentSettings() {
         sendOneFloatControl(Controls.SET_PITCH_PROP_COEF, pitchPropCoef.value!!, true)
@@ -326,6 +353,7 @@ class ControlsManager(private val connection: BluetoothConnection, private val a
         sendOneIntControl(Controls.SET_IMU_LPF_MODE, imuLPFMode.value!!, true)
         sendOneFloatControl(Controls.SET_PITCH_ADJUST, pitchAdjust.value!!, true)
         sendOneFloatControl(Controls.SET_ROLL_ADJUST, rollAdjust.value!!, true)
+        sendOneFloatControl(Controls.SET_ACC_FILTERING, accFiltering.value!!, true)
     }
 
 

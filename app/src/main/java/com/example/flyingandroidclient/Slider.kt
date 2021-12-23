@@ -111,15 +111,15 @@ class Slider @JvmOverloads constructor(
     private var dragStartPosition = 0f
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
-        if (e.action === MotionEvent.ACTION_MOVE && !dragged) return false
-        if (e.action === MotionEvent.ACTION_UP) {
+        if (e.action == MotionEvent.ACTION_MOVE && !dragged) return false
+        if (e.action == MotionEvent.ACTION_UP) {
             dragged = false
             parent.requestDisallowInterceptTouchEvent(false)
 
         }
         val touchPosition = if (isVertical) e.getY(0) else e.getX(0)
         val viewLength = if (isVertical) height.toFloat() else width.toFloat()
-        if (e.action === MotionEvent.ACTION_DOWN) {
+        if (e.action == MotionEvent.ACTION_DOWN) {
             dragged = true
             dragStartTouchPosition = touchPosition
             dragStartPosition = position
@@ -131,7 +131,7 @@ class Slider @JvmOverloads constructor(
         if (maxValue != null && draggedPosition > maxValue!!) draggedPosition = maxValue!!
         invalidate()
         for (callback in callbacks) {
-            callback(draggedPosition, e.action === MotionEvent.ACTION_UP)
+            callback(draggedPosition, e.action == MotionEvent.ACTION_UP)
         }
         return true
     }

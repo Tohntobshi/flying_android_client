@@ -35,7 +35,7 @@ class BluetoothConnection {
     }
 
     // it will return on disconnect or failed connection
-    suspend fun establish(device: BluetoothDevice, uuid: String, onRead: suspend (data: ByteArray) -> Unit) {
+    suspend fun establish(device: BluetoothDevice, uuid: String, onRead: (data: ByteArray) -> Unit) {
         withContext(Dispatchers.IO) {
             try {
                 socket = device.createRfcommSocketToServiceRecord(UUID.fromString(uuid))
@@ -51,7 +51,9 @@ class BluetoothConnection {
                     val numBytes2 = inStream!!.read(bufferMesData)
                     if (numBytes2 != messageSize) throw IOException("message size conflict")
 //                    Log.i("myinfo", "got message size $messageSize")
-                    onRead(bufferMesData)
+                    withContext(Dispatchers.Main) {
+                        onRead(bufferMesData)
+                    }
                 }
             } catch (e: IOException) {
 

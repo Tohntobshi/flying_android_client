@@ -3,13 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../layout/custom_preview.xml" value="0.22239583333333332" />
+        <entry key="../../../../layout/custom_preview.xml" value="0.22" />
+        <entry key="app/src/main/res/drawable-anydpi/left_arrow.xml" value="0.23229166666666667" />
+        <entry key="app/src/main/res/drawable-anydpi/right_arrow2.xml" value="0.20925925925925926" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.23229166666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.23229166666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_keyboard_arrow_left_24.xml" value="0.23229166666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.23229166666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_keyboard_arrow_up_24.xml" value="0.23229166666666667" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.23229166666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.203125" />
         <entry key="app/src/main/res/layout/device_list_element.xml" value="0.19427083333333334" />
         <entry key="app/src/main/res/layout/fragment_options.xml" value="0.19427083333333334" />
         <entry key="app/src/main/res/layout/fragment_primary_contols.xml" value="0.19427083333333334" />
         <entry key="app/src/main/res/layout/fragment_tabs.xml" value="0.19427083333333334" />
-        <entry key="app/src/main/res/layout/fragment_tweaks.xml" value="0.22741935483870968" />
+        <entry key="app/src/main/res/layout/fragment_tweaks.xml" value="0.19183673469387755" />
       </map>
     </option>
   </component>
