@@ -286,6 +286,16 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         rollAdjust.value = value
         sendOneFloatControl(Controls.SET_ROLL_ADJUST, value, isLast)
     }
+    val usHeightFiltering = MutableLiveData<Float>(0.95f);
+    fun setUsHeightFiltering(value: Float, isLast: Boolean) {
+        usHeightFiltering.value = value
+        sendOneFloatControl(Controls.SET_US_HEIGHT_FILTERING, value, isLast)
+    }
+    val usHeightDerFiltering = MutableLiveData<Float>(0.95f);
+    fun setUsHeightDerFiltering(value: Float, isLast: Boolean) {
+        usHeightDerFiltering.value = value
+        sendOneFloatControl(Controls.SET_US_HEIGHT_DER_FILTERING, value, isLast)
+    }
     fun saveCurrentSettings() {
         with (sharedPref.edit()) {
             putFloat("PITCH_PROP_COEF", pitchPropCoef.value!!)
@@ -308,6 +318,8 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
             putFloat("PITCH_ADJUST", pitchAdjust.value!!)
             putFloat("ROLL_ADJUST", rollAdjust.value!!)
             putFloat("ACC_FILTERING", accFiltering.value!!)
+            putFloat("US_HEIGHT_FILTERING", usHeightFiltering.value!!)
+            putFloat("US_HEIGHT_DER_FILTERING", usHeightDerFiltering.value!!)
             apply()
         }
     }
@@ -332,6 +344,8 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         pitchAdjust.value = sharedPref.getFloat("PITCH_ADJUST", 0.0f)
         rollAdjust.value = sharedPref.getFloat("ROLL_ADJUST", 0.0f)
         accFiltering.value = sharedPref.getFloat("ACC_FILTERING", 0.95f)
+        usHeightFiltering.value = sharedPref.getFloat("US_HEIGHT_FILTERING", 0.95f)
+        usHeightDerFiltering.value = sharedPref.getFloat("US_HEIGHT_DER_FILTERING", 0.95f)
     }
     fun sendCurrentSettings() {
         sendOneFloatControl(Controls.SET_PITCH_PROP_COEF, pitchPropCoef.value!!, true)
@@ -354,6 +368,8 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         sendOneFloatControl(Controls.SET_PITCH_ADJUST, pitchAdjust.value!!, true)
         sendOneFloatControl(Controls.SET_ROLL_ADJUST, rollAdjust.value!!, true)
         sendOneFloatControl(Controls.SET_ACC_FILTERING, accFiltering.value!!, true)
+        sendOneFloatControl(Controls.SET_US_HEIGHT_FILTERING, usHeightFiltering.value!!, true)
+        sendOneFloatControl(Controls.SET_US_HEIGHT_DER_FILTERING, usHeightDerFiltering.value!!, true)
     }
 
 

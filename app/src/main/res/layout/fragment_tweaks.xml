@@ -385,6 +385,25 @@
                         app:fractionDigits="3"
                         app:minValue="0"
                         app:maxValue="1"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Us height filtering"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp" />
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderUsHeightFilt"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.usHeightFiltering}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="0.01"
+                        app:fractionDigits="3"
+                        app:minValue="0"
+                        app:maxValue="1"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -425,6 +444,25 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         app:position="@{viewmodel.controls.accFiltering}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="0.01"
+                        app:fractionDigits="3"
+                        app:minValue="0"
+                        app:maxValue="1"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Us height der filtering"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp" />
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderUsHeightDerFilt"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.usHeightDerFiltering}"
                         app:orientation="horizontal"
                         app:positionChangeMultiplier="0.01"
                         app:fractionDigits="3"

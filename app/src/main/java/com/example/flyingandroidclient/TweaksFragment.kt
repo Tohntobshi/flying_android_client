@@ -44,12 +44,11 @@ class TweaksFragment : Fragment() {
         binding.sliderPitchAdjust.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPitchAdjust(value, isLast) }
         binding.sliderRollAdjust.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setRollAdjust(value, isLast) }
         binding.sliderAccFiltering.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setAccFiltering(value, isLast) }
+        binding.sliderUsHeightFilt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setUsHeightFiltering(value, isLast) }
+        binding.sliderUsHeightDerFilt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setUsHeightDerFiltering(value, isLast) }
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
 
     override fun onResume() {
         super.onResume()
