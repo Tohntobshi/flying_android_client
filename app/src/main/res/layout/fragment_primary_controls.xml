@@ -42,5 +42,17 @@
             app:mode="@{viewmodel.accSliderMode}"
             app:relativeAcc="@{viewmodel.controls.relativeAcceleration}"
             />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`Battery ` + viewmodel.info.batteryVoltageFormatted + ` V`}"
+            tools:text="Battery 12.6 V"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,9 +1,12 @@
 package com.example.flyingandroidclient
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.nio.ByteBuffer
+import kotlin.math.roundToInt
 
 fun <T> MutableList<T>.addNotExceed(element: T, maxSize: Int) {
     this.add(element)
@@ -40,6 +43,11 @@ class InfoManager {
 
     val landingFlag = MutableLiveData<Boolean>(false)
 
+    val batteryVoltage = MutableLiveData<Float>(0.0f)
+    val batteryVoltageFormatted: LiveData<String> = Transformations.map(batteryVoltage) {
+        String.format("%.2f", it)
+    }
+
     private fun addToList(value: Float, mldlist: MutableLiveData<MutableList<Float>>) {
         val list = mldlist.value
         list?.addNotExceed(value, 100)
@@ -48,7 +56,7 @@ class InfoManager {
 
     fun onMessage (data: ByteArray): Unit {
         if (data.size < 1) return
-        if (data[0] == MessageTypes.SECONDARY_INFO.ordinal.toByte() && data.size == (69)) {
+        if (data[0] == MessageTypes.SECONDARY_INFO.ordinal.toByte() && data.size == 73) {
             val currentPitchError = ByteBuffer.wrap(data, 1, 4).float
             val currentRollError = ByteBuffer.wrap(data, 5, 4).float
 
@@ -72,6 +80,8 @@ class InfoManager {
             val currentRollErrInt = ByteBuffer.wrap(data, 57, 4).float
             val currentYawErrInt = ByteBuffer.wrap(data, 61, 4).float
             val currentHeightErrInt = ByteBuffer.wrap(data, 65, 4).float
+
+            val currentVoltage = ByteBuffer.wrap(data, 69, 4).float
 
             addToList(currentPitchError, pitchErrors)
             addToList(currentRollError, rollErrors)
@@ -105,10 +115,13 @@ class InfoManager {
             yawErrInt.value = currentYawErrInt
             heightErrInt.value = currentHeightErrInt
 
+            batteryVoltage.value = currentVoltage
+
             return
         }
-        if (data[0] == MessageTypes.PRIMARY_INFO.ordinal.toByte() && data.size == (2)) {
+        if (data[0] == MessageTypes.PRIMARY_INFO.ordinal.toByte() && data.size == 6) {
             landingFlag.value = data[1] != 0.toByte()
+            batteryVoltage.value = ByteBuffer.wrap(data, 2, 4).float
             return
         }
 

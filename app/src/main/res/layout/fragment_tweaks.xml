@@ -788,8 +788,17 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{`pid loop freq ` + viewmodel.info.pidLoopFreq}"
-                    tools:text="pid loop freq 50"
+                    android:text="@{`pid loop freq ` + viewmodel.info.pidLoopFreq + ` Hz`}"
+                    tools:text="pid loop freq 50 Hz"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{`battery ` + viewmodel.info.batteryVoltageFormatted + ` V`}"
+                    tools:text="battery 12.6 V"
                     android:textAlignment="center"
                     android:gravity="center_horizontal"
                     android:textSize="16dp"

@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import android.os.PowerManager
 
 import android.os.PowerManager.WakeLock
+import androidx.lifecycle.Transformations
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,9 +37,12 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = model
         binding.lifecycleOwner = this
 
-        model.currentTab.observe(this, Observer {
-            changeTab(it)
-        })
+        Transformations.distinctUntilChanged(model.currentTab).also {
+            it.observe(this, Observer { tab ->
+                changeTab(tab)
+            })
+        }
+
 
         binding.outerLayout.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
             binding.innerLayout.layoutParams.width = v.height
@@ -78,8 +82,6 @@ class MainActivity : AppCompatActivity() {
             Tabs.TWEAKS -> TweaksFragment::class.java
             Tabs.OPTIONS -> OptionsFragment::class.java
         }
-
-
         supportFragmentManager.commit {
             replace(R.id.contentFragment, fragmentClass, null)
             setReorderingAllowed(true)

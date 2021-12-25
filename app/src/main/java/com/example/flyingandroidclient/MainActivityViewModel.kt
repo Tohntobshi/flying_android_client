@@ -2,13 +2,13 @@ package com.example.flyingandroidclient
 
 import android.app.Application
 import android.bluetooth.BluetoothDevice
+import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-
-
-//@ExperimentalUnsignedTypes // just to make it clear that the experimental unsigned types are used
-//fun ByteArray.toHexString() = asUByteArray().joinToString("") { it.toString(16).padStart(2, '0') }
-
 
 
 enum class Tabs {
@@ -22,6 +22,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val connection = BluetoothConnection()
     val controls = ControlsManager(this)
     val info = InfoManager()
+    val vibrator = application.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
 
     val pitchPropInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.pitchPropCoef, info.pitchErr)) {
@@ -58,6 +59,9 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             controls.setRelativeAcceleration(0f, true)
             controls.switchToRelativeAcceleration()
             accSliderMode.value = value
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+            }
         }
     }
 
@@ -70,10 +74,14 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         })
     }
 
+
     fun onLanding() {
         controls.setHeight(0f, true)
         controls.resetLandingFlag()
         accSliderMode.value = AccelerationSliderMode.US_HEIGHT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+        }
     }
 
     val accSliderMode = MutableLiveData<AccelerationSliderMode>(AccelerationSliderMode.US_HEIGHT)
