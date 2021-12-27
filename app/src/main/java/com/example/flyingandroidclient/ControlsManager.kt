@@ -232,10 +232,35 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         turnOffInclineAngle.value = value
         sendOneFloatControl(Controls.SET_TURN_OFF_INCLINE_ANGLE, value, isLast)
     }
-    val imuLPFMode = MutableLiveData<Int>(3);
-    fun setImuLPFMode(value: Int, isLast: Boolean) {
-        imuLPFMode.value = value
-        sendOneIntControl(Controls.SET_IMU_LPF_MODE, value, isLast)
+    val accLPFMode = MutableLiveData<Int>(3);
+    fun setAccLPFMode(value: Int, isLast: Boolean) {
+        accLPFMode.value = value
+        sendOneIntControl(Controls.SET_ACC_LPF_MODE, value, isLast)
+    }
+    val gyroLPFMode = MutableLiveData<Int>(3);
+    fun setGyroLPFMode(value: Int, isLast: Boolean) {
+        gyroLPFMode.value = value
+        sendOneIntControl(Controls.SET_GYRO_LPF_MODE, value, isLast)
+    }
+    val pitchIntLimit = MutableLiveData<Float>(0f);
+    fun setPitchIntLimit(value: Float, isLast: Boolean) {
+        pitchIntLimit.value = value
+        sendOneFloatControl(Controls.SET_PITCH_I_LIMIT, value, isLast)
+    }
+    val rollIntLimit = MutableLiveData<Float>(0f);
+    fun setRollIntLimit(value: Float, isLast: Boolean) {
+        rollIntLimit.value = value
+        sendOneFloatControl(Controls.SET_ROLL_I_LIMIT, value, isLast)
+    }
+    val yawIntLimit = MutableLiveData<Float>(0f);
+    fun setYawIntLimit(value: Float, isLast: Boolean) {
+        yawIntLimit.value = value
+        sendOneFloatControl(Controls.SET_YAW_I_LIMIT, value, isLast)
+    }
+    val heightIntLimit = MutableLiveData<Float>(0f);
+    fun setHeightIntLimit(value: Float, isLast: Boolean) {
+        heightIntLimit.value = value
+        sendOneFloatControl(Controls.SET_HEIGHT_I_LIMIT, value, isLast)
     }
     fun resetTurnOffTrigger() {
         sendControl(Controls.RESET_TURN_OFF_TRIGGER)
@@ -314,12 +339,17 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
             putFloat("YAW_PROP_COEF", yawPropCoef.value!!)
             putFloat("YAW_DER_COEF", yawDerCoef.value!!)
             putFloat("YAW_INT_COEF", yawIntCoef.value!!)
-            putInt("IMU_LPF_MODE", imuLPFMode.value!!)
+            putInt("ACC_LPF_MODE", accLPFMode.value!!)
+            putInt("GYRO_LPF_MODE", gyroLPFMode.value!!)
             putFloat("PITCH_ADJUST", pitchAdjust.value!!)
             putFloat("ROLL_ADJUST", rollAdjust.value!!)
             putFloat("ACC_FILTERING", accFiltering.value!!)
             putFloat("US_HEIGHT_FILTERING", usHeightFiltering.value!!)
             putFloat("US_HEIGHT_DER_FILTERING", usHeightDerFiltering.value!!)
+            putFloat("PITCH_I_LIMIT", pitchIntLimit.value!!)
+            putFloat("ROLL_I_LIMIT", rollIntLimit.value!!)
+            putFloat("YAW_I_LIMIT", yawIntLimit.value!!)
+            putFloat("HEIGHT_I_LIMIT", heightIntLimit.value!!)
             apply()
         }
     }
@@ -340,12 +370,17 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         yawPropCoef.value = sharedPref.getFloat("YAW_PROP_COEF", 0.0f)
         yawDerCoef.value = sharedPref.getFloat("YAW_DER_COEF", 0.0f)
         yawIntCoef.value = sharedPref.getFloat("YAW_INT_COEF", 0.0f)
-        imuLPFMode.value = sharedPref.getInt("IMU_LPF_MODE", 3)
+        accLPFMode.value = sharedPref.getInt("ACC_LPF_MODE", 3)
+        gyroLPFMode.value = sharedPref.getInt("GYRO_LPF_MODE", 3)
         pitchAdjust.value = sharedPref.getFloat("PITCH_ADJUST", 0.0f)
         rollAdjust.value = sharedPref.getFloat("ROLL_ADJUST", 0.0f)
         accFiltering.value = sharedPref.getFloat("ACC_FILTERING", 0.95f)
         usHeightFiltering.value = sharedPref.getFloat("US_HEIGHT_FILTERING", 0.95f)
         usHeightDerFiltering.value = sharedPref.getFloat("US_HEIGHT_DER_FILTERING", 0.95f)
+        pitchIntLimit.value = sharedPref.getFloat("PITCH_I_LIMIT", 0f)
+        rollIntLimit.value = sharedPref.getFloat("ROLL_I_LIMIT", 0f)
+        yawIntLimit.value = sharedPref.getFloat("YAW_I_LIMIT", 0f)
+        heightIntLimit.value = sharedPref.getFloat("HEIGHT_I_LIMIT", 0f)
     }
     fun sendCurrentSettings() {
         sendOneFloatControl(Controls.SET_PITCH_PROP_COEF, pitchPropCoef.value!!, true)
@@ -364,12 +399,17 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         sendOneFloatControl(Controls.SET_YAW_PROP_COEF, yawPropCoef.value!!, true)
         sendOneFloatControl(Controls.SET_YAW_DER_COEF, yawDerCoef.value!!, true)
         sendOneFloatControl(Controls.SET_YAW_INT_COEF, yawIntCoef.value!!, true)
-        sendOneIntControl(Controls.SET_IMU_LPF_MODE, imuLPFMode.value!!, true)
+        sendOneIntControl(Controls.SET_ACC_LPF_MODE, accLPFMode.value!!, true)
+        sendOneIntControl(Controls.SET_GYRO_LPF_MODE, gyroLPFMode.value!!, true)
         sendOneFloatControl(Controls.SET_PITCH_ADJUST, pitchAdjust.value!!, true)
         sendOneFloatControl(Controls.SET_ROLL_ADJUST, rollAdjust.value!!, true)
         sendOneFloatControl(Controls.SET_ACC_FILTERING, accFiltering.value!!, true)
         sendOneFloatControl(Controls.SET_US_HEIGHT_FILTERING, usHeightFiltering.value!!, true)
         sendOneFloatControl(Controls.SET_US_HEIGHT_DER_FILTERING, usHeightDerFiltering.value!!, true)
+        sendOneFloatControl(Controls.SET_PITCH_I_LIMIT, pitchIntLimit.value!!, true)
+        sendOneFloatControl(Controls.SET_ROLL_I_LIMIT, rollIntLimit.value!!, true)
+        sendOneFloatControl(Controls.SET_YAW_I_LIMIT, yawIntLimit.value!!, true)
+        sendOneFloatControl(Controls.SET_HEIGHT_I_LIMIT, heightIntLimit.value!!, true)
     }
 
 

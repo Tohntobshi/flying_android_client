@@ -40,12 +40,17 @@ class TweaksFragment : Fragment() {
         binding.sliderYawProp.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setYawPropCoef(value, isLast) }
         binding.sliderYawDer.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setYawDerCoef(value, isLast) }
         binding.sliderYawInt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setYawIntCoef(value, isLast) }
-        binding.sliderImuLPFMode.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setImuLPFMode(value.roundToInt(), isLast) }
+        binding.sliderAccLPFMode.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setAccLPFMode(value.roundToInt(), isLast) }
+        binding.sliderGyroLPFMode.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setGyroLPFMode(value.roundToInt(), isLast) }
         binding.sliderPitchAdjust.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPitchAdjust(value, isLast) }
         binding.sliderRollAdjust.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setRollAdjust(value, isLast) }
         binding.sliderAccFiltering.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setAccFiltering(value, isLast) }
         binding.sliderUsHeightFilt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setUsHeightFiltering(value, isLast) }
         binding.sliderUsHeightDerFilt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setUsHeightDerFiltering(value, isLast) }
+        binding.sliderPitchILimit.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPitchIntLimit(value, isLast) }
+        binding.sliderRollILimit.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setRollIntLimit(value, isLast) }
+        binding.sliderYawILimit.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setYawIntLimit(value, isLast) }
+        binding.sliderHeightILimit.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setHeightIntLimit(value, isLast) }
         return binding.root
     }
 

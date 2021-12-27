@@ -25,34 +25,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val vibrator = application.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
 
-    val pitchPropInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.pitchPropCoef, info.pitchErr)) {
-        (it.first!! * it.second!!).toInt()
-    }
-    val pitchDerInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.pitchDerCoef, info.pitchErrDer)) {
-        (it.first!! * it.second!!).toInt()
-    }
-    val pitchIntInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.pitchIntCoef, info.pitchErrInt)) {
-        (it.first!! * it.second!!).toInt()
-    }
-    val rollPropInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.rollPropCoef, info.rollErr)) {
-        (it.first!! * it.second!!).toInt()
-    }
-    val rollDerInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.rollDerCoef, info.rollErrDer)) {
-        (it.first!! * it.second!!).toInt()
-    }
-    val rollIntInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.rollIntCoef, info.rollErrInt)) {
-        (it.first!! * it.second!!).toInt()
-    }
-    val heightPropInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.heightPropCoef, info.heightErr)) {
-        (it.first!! * it.second!! * 1000).toInt()
-    }
-    val heightDerInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.heightDerCoef, info.heightErrDer)) {
-        (it.first!! * it.second!! * 1000).toInt()
-    }
-    val heightIntInfluence: LiveData<Int> = Transformations.map(PairMediatorLiveData(controls.heightIntCoef, info.heightErrInt)) {
-        (it.first!! * it.second!! * 1000).toInt()
-    }
-
     fun onAccSliderModeChange(value: AccelerationSliderMode) {
         // only switch to relative acc mode now
         if (value == AccelerationSliderMode.REL_ACC) {

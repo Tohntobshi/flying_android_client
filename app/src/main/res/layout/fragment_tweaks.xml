@@ -244,6 +244,26 @@
                         app:positionChangeMultiplier="0.1"
                         app:fractionDigits="3"
                         app:minValue="0"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pitch I Limit"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp"
+                        android:layout_marginTop="10dp"/>
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderPitchILimit"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.pitchIntLimit}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="0.1"
+                        app:fractionDigits="3"
+                        app:minValue="0"
+                        app:maxValue="1"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -325,6 +345,26 @@
                         app:positionChangeMultiplier="0.1"
                         app:fractionDigits="3"
                         app:minValue="0"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Roll I Limit"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp"
+                        android:layout_marginTop="10dp"/>
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderRollILimit"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.rollIntLimit}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="0.1"
+                        app:fractionDigits="3"
+                        app:minValue="0"
+                        app:maxValue="1"/>
                 </LinearLayout>
 
 
@@ -414,17 +454,36 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="IMU LPF mode"
+                        android:text="Acc LPF mode"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp" />
                     <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderImuLPFMode"
+                        android:id="@+id/sliderAccLPFMode"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.imuLPFMode}"
+                        app:position="@{viewmodel.controls.accLPFMode}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="1"
+                        app:fractionDigits="0"
+                        app:minValue="1"
+                        app:maxValue="6"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Gyro LPF mode"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp" />
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderGyroLPFMode"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.gyroLPFMode}"
                         app:orientation="horizontal"
                         app:positionChangeMultiplier="1"
                         app:fractionDigits="0"
@@ -614,6 +673,26 @@
                         app:positionChangeMultiplier="0.1"
                         app:fractionDigits="3"
                         app:minValue="0" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Height I Limit"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp"
+                        android:layout_marginTop="10dp"/>
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderHeightILimit"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.heightIntLimit}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="0.1"
+                        app:fractionDigits="3"
+                        app:minValue="0"
+                        app:maxValue="1"/>
                 </LinearLayout>
             </LinearLayout>
             <TextView
@@ -723,6 +802,26 @@
                         app:positionChangeMultiplier="0.1"
                         app:fractionDigits="3"
                         app:minValue="0" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Yaw I Limit"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp"
+                        android:layout_marginTop="10dp"/>
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderYawILimit"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.yawIntLimit}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="0.1"
+                        app:fractionDigits="3"
+                        app:minValue="0"
+                        app:maxValue="1"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -754,33 +853,6 @@
                     android:layout_height="wrap_content"
                     android:text="@{`bl ` + viewmodel.info.backLeft + ` br ` + viewmodel.info.backRight}"
                     tools:text="bl 1000 br 1000"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal"
-                    android:textSize="16dp"
-                    android:layout_marginTop="10dp" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{`pitch influence prop ` + viewmodel.pitchPropInfluence + ` der ` + viewmodel.pitchDerInfluence + ` int ` + viewmodel.pitchIntInfluence}"
-                    tools:text="pitch influence prop 0 der 0 int 0"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal"
-                    android:textSize="16dp"
-                    android:layout_marginTop="10dp" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{`roll influence prop ` + viewmodel.rollPropInfluence + ` der ` + viewmodel.rollDerInfluence + ` int ` + viewmodel.rollIntInfluence}"
-                    tools:text="roll influence prop 0 der 0 int 0"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal"
-                    android:textSize="16dp"
-                    android:layout_marginTop="10dp" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{`height influence prop ` + viewmodel.heightPropInfluence + ` der ` + viewmodel.heightDerInfluence + ` int ` + viewmodel.heightIntInfluence}"
-                    tools:text="height influence prop 0 der 0 int 0"
                     android:textAlignment="center"
                     android:gravity="center_horizontal"
                     android:textSize="16dp"
