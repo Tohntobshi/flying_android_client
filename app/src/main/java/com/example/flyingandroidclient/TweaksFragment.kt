@@ -51,6 +51,12 @@ class TweaksFragment : Fragment() {
         binding.sliderRollILimit.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setRollIntLimit(value, isLast) }
         binding.sliderYawILimit.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setYawIntLimit(value, isLast) }
         binding.sliderHeightILimit.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setHeightIntLimit(value, isLast) }
+        binding.sliderVDropCurveA.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setVoltageDropCurveA(value, isLast) }
+        binding.sliderVDropCurveB.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setVoltageDropCurveB(value, isLast) }
+        binding.sliderPLossCurveA.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPowerLossCurveA(value, isLast) }
+        binding.sliderPLossCurveB.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPowerLossCurveB(value, isLast) }
+        binding.sliderMCurveA.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setMotorCurveA(value, isLast) }
+        binding.sliderMCurveB.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setMotorCurveB(value, isLast) }
         return binding.root
     }
 

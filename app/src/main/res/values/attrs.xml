@@ -22,4 +22,16 @@
         <attr name="mode" format="enum" />
         <attr name="relativeAcc" format="float" />
     </declare-styleable>
+    <declare-styleable name="CurvePlot">
+        <attr name="a" format="float" />
+        <attr name="b" format="float" />
+        <attr name="xSpan" format="float" />
+        <attr name="ySpan" format="float" />
+        <attr name="xLabel" format="string" />
+        <attr name="yLabel" format="string" />
+        <attr name="xMaxLabel" format="string" />
+        <attr name="yMaxLabel" format="string" />
+        <attr name="xMinLabel" format="string" />
+        <attr name="yMinLabel" format="string" />
+    </declare-styleable>
 </resources>

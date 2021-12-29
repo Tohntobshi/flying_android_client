@@ -7,9 +7,11 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.withMatrix
 import kotlin.math.*
 
 class Joystick @JvmOverloads constructor(
@@ -44,6 +46,7 @@ class Joystick @JvmOverloads constructor(
             dragStartTouchPosition = PointF(x, y)
             draggedDirection = direction
         } else {
+            // TODO probably need to normalize vectors before further computation
             val x1 = dragStartTouchPosition.x - centerX
             val y1 = centerY - dragStartTouchPosition.y
             val x2 = x - centerX
@@ -192,11 +195,14 @@ class Joystick @JvmOverloads constructor(
 
     private val boundariesTmp = RectF()
 
+    private val rotationMatrix = Matrix()
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         val strokeWidth = radius / 7f
         paint.style = Paint.Style.STROKE
-        paint.strokeWidth = strokeWidth
+
+        paint.strokeWidth = strokeWidth / 2f
         paint.textSize = strokeWidth
         val directionToShow = if (wheelPointerId == null) direction else draggedDirection
         val directionToShowInt = directionToShow.roundToInt()
@@ -205,11 +211,20 @@ class Joystick @JvmOverloads constructor(
         boundariesTmp.right = right - strokeWidth / 2f
         boundariesTmp.bottom = bottom - strokeWidth / 2f
 
-        for (index in 0..89) {
-            val deg = clampDegrees(4f * index + directionToShow)
-            if (deg > 255 && deg < 285) continue
-            canvas?.drawArc(boundariesTmp, deg, 1.5f, false, paint)
+        rotationMatrix.setRotate(directionToShow, centerX, centerY)
+        canvas?.withMatrix(rotationMatrix) {
+            var i = 0
+            while (i < 90) {
+                val degToSkip = clampDegrees(4f * i + directionToShow)
+                val deg = clampDegrees(4f * i)
+                i += 1
+                if (degToSkip > 255 && degToSkip < 285) continue
+                canvas?.drawArc(boundariesTmp, deg, 1.5f, false, paint)
+
+            }
         }
+
+
         paint.style = Paint.Style.FILL
         val x = centerX + position.x * maxJoystickMovement
         val y = centerY - position.y * maxJoystickMovement

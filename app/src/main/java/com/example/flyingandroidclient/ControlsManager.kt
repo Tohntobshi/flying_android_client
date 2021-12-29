@@ -262,6 +262,36 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         heightIntLimit.value = value
         sendOneFloatControl(Controls.SET_HEIGHT_I_LIMIT, value, isLast)
     }
+    val voltageDropCurveA = MutableLiveData<Float>(2f);
+    fun setVoltageDropCurveA(value: Float, isLast: Boolean) {
+        voltageDropCurveA.value = value
+        sendOneFloatControl(Controls.SET_VOLTAGE_DROP_CURVE_A, value, isLast)
+    }
+    val voltageDropCurveB = MutableLiveData<Float>(3f);
+    fun setVoltageDropCurveB(value: Float, isLast: Boolean) {
+        voltageDropCurveB.value = value
+        sendOneFloatControl(Controls.SET_VOLTAGE_DROP_CURVE_B, value, isLast)
+    }
+    val powerLossCurveA = MutableLiveData<Float>(0.53f);
+    fun setPowerLossCurveA(value: Float, isLast: Boolean) {
+        powerLossCurveA.value = value
+        sendOneFloatControl(Controls.SET_POWER_LOSS_CURVE_A, value, isLast)
+    }
+    val powerLossCurveB = MutableLiveData<Float>(1f);
+    fun setPowerLossCurveB(value: Float, isLast: Boolean) {
+        powerLossCurveB.value = value
+        sendOneFloatControl(Controls.SET_POWER_LOSS_CURVE_B, value, isLast)
+    }
+    val motorCurveA = MutableLiveData<Float>(0.96f);
+    fun setMotorCurveA(value: Float, isLast: Boolean) {
+        motorCurveA.value = value
+        sendOneFloatControl(Controls.SET_MOTOR_CURVE_A, value, isLast)
+    }
+    val motorCurveB = MutableLiveData<Float>(0.57f);
+    fun setMotorCurveB(value: Float, isLast: Boolean) {
+        motorCurveB.value = value
+        sendOneFloatControl(Controls.SET_MOTOR_CURVE_B, value, isLast)
+    }
     fun resetTurnOffTrigger() {
         sendControl(Controls.RESET_TURN_OFF_TRIGGER)
     }
@@ -350,6 +380,12 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
             putFloat("ROLL_I_LIMIT", rollIntLimit.value!!)
             putFloat("YAW_I_LIMIT", yawIntLimit.value!!)
             putFloat("HEIGHT_I_LIMIT", heightIntLimit.value!!)
+            putFloat("VOLTAGE_DROP_CURVE_A", voltageDropCurveA.value!!)
+            putFloat("VOLTAGE_DROP_CURVE_B", voltageDropCurveB.value!!)
+            putFloat("POWER_LOSS_CURVE_A", powerLossCurveA.value!!)
+            putFloat("POWER_LOSS_CURVE_B", powerLossCurveB.value!!)
+            putFloat("MOTOR_CURVE_A", motorCurveA.value!!)
+            putFloat("MOTOR_CURVE_B", motorCurveB.value!!)
             apply()
         }
     }
@@ -381,6 +417,12 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         rollIntLimit.value = sharedPref.getFloat("ROLL_I_LIMIT", 0f)
         yawIntLimit.value = sharedPref.getFloat("YAW_I_LIMIT", 0f)
         heightIntLimit.value = sharedPref.getFloat("HEIGHT_I_LIMIT", 0f)
+        voltageDropCurveA.value = sharedPref.getFloat("VOLTAGE_DROP_CURVE_A", 2f)
+        voltageDropCurveB.value = sharedPref.getFloat("VOLTAGE_DROP_CURVE_B", 3f)
+        powerLossCurveA.value = sharedPref.getFloat("POWER_LOSS_CURVE_A", 0.53f)
+        powerLossCurveB.value = sharedPref.getFloat("POWER_LOSS_CURVE_B", 1f)
+        motorCurveA.value = sharedPref.getFloat("MOTOR_CURVE_A", 0.96f)
+        motorCurveB.value = sharedPref.getFloat("MOTOR_CURVE_B", 0.57f)
     }
     fun sendCurrentSettings() {
         sendOneFloatControl(Controls.SET_PITCH_PROP_COEF, pitchPropCoef.value!!, true)
@@ -410,6 +452,12 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         sendOneFloatControl(Controls.SET_ROLL_I_LIMIT, rollIntLimit.value!!, true)
         sendOneFloatControl(Controls.SET_YAW_I_LIMIT, yawIntLimit.value!!, true)
         sendOneFloatControl(Controls.SET_HEIGHT_I_LIMIT, heightIntLimit.value!!, true)
+        sendOneFloatControl(Controls.SET_VOLTAGE_DROP_CURVE_A, voltageDropCurveA.value!!, true)
+        sendOneFloatControl(Controls.SET_VOLTAGE_DROP_CURVE_B, voltageDropCurveB.value!!, true)
+        sendOneFloatControl(Controls.SET_POWER_LOSS_CURVE_A, powerLossCurveA.value!!, true)
+        sendOneFloatControl(Controls.SET_POWER_LOSS_CURVE_B, powerLossCurveB.value!!, true)
+        sendOneFloatControl(Controls.SET_MOTOR_CURVE_A, motorCurveA.value!!, true)
+        sendOneFloatControl(Controls.SET_MOTOR_CURVE_B, motorCurveB.value!!, true)
     }
 
 
