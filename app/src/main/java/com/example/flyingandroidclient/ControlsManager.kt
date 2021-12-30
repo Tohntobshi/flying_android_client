@@ -211,6 +211,11 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         heightIntCoef.value = value
         sendOneFloatControl(Controls.SET_HEIGHT_INT_COEF, value, isLast)
     }
+    val heightNegativeIntCoef = MutableLiveData<Float>(0f);
+    fun setHeightNegativeIntCoef(value: Float, isLast: Boolean) {
+        heightNegativeIntCoef.value = value
+        sendOneFloatControl(Controls.SET_HEIGHT_NEGATIVE_INT_COEF, value, isLast)
+    }
 
     val yawPropCoef = MutableLiveData<Float>(0f);
     fun setYawPropCoef(value: Float, isLast: Boolean) {
@@ -365,6 +370,7 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
             putFloat("HEIGHT_PROP_COEF", heightPropCoef.value!!)
             putFloat("HEIGHT_DER_COEF", heightDerCoef.value!!)
             putFloat("HEIGHT_INT_COEF", heightIntCoef.value!!)
+            putFloat("HEIGHT_NEGATIVE_INT_COEF", heightNegativeIntCoef.value!!)
             putFloat("TURN_OFF_INCLINE_ANGLE", turnOffInclineAngle.value!!)
             putFloat("YAW_PROP_COEF", yawPropCoef.value!!)
             putFloat("YAW_DER_COEF", yawDerCoef.value!!)
@@ -402,6 +408,7 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         heightPropCoef.value = sharedPref.getFloat("HEIGHT_PROP_COEF", 0.0f)
         heightDerCoef.value = sharedPref.getFloat("HEIGHT_DER_COEF", 0.0f)
         heightIntCoef.value = sharedPref.getFloat("HEIGHT_INT_COEF", 0.0f)
+        heightNegativeIntCoef.value = sharedPref.getFloat("HEIGHT_NEGATIVE_INT_COEF", 0.0f)
         turnOffInclineAngle.value = sharedPref.getFloat("TURN_OFF_INCLINE_ANGLE", 30.0f)
         yawPropCoef.value = sharedPref.getFloat("YAW_PROP_COEF", 0.0f)
         yawDerCoef.value = sharedPref.getFloat("YAW_DER_COEF", 0.0f)
@@ -437,6 +444,7 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         sendOneFloatControl(Controls.SET_HEIGHT_PROP_COEF, heightPropCoef.value!!, true)
         sendOneFloatControl(Controls.SET_HEIGHT_DER_COEF, heightDerCoef.value!!, true)
         sendOneFloatControl(Controls.SET_HEIGHT_INT_COEF, heightIntCoef.value!!, true)
+        sendOneFloatControl(Controls.SET_HEIGHT_NEGATIVE_INT_COEF, heightNegativeIntCoef.value!!, true)
         sendOneFloatControl(Controls.SET_TURN_OFF_INCLINE_ANGLE, turnOffInclineAngle.value!!, true)
         sendOneFloatControl(Controls.SET_YAW_PROP_COEF, yawPropCoef.value!!, true)
         sendOneFloatControl(Controls.SET_YAW_DER_COEF, yawDerCoef.value!!, true)

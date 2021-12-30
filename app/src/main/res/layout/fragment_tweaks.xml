@@ -250,8 +250,7 @@
                         android:text="Pitch I Limit"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
+                        android:textSize="16dp"/>
                     <com.example.flyingandroidclient.Slider
                         android:id="@+id/sliderPitchILimit"
                         android:layout_width="match_parent"
@@ -351,8 +350,7 @@
                         android:text="Roll I Limit"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
+                        android:textSize="16dp"/>
                     <com.example.flyingandroidclient.Slider
                         android:id="@+id/sliderRollILimit"
                         android:layout_width="match_parent"
@@ -608,6 +606,24 @@
                         app:positionChangeMultiplier="0.1"
                         app:fractionDigits="3"
                         app:minValue="0" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Height D"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp" />
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderHeightDer"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.heightDerCoef}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="0.1"
+                        app:fractionDigits="3"
+                        app:minValue="0" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -640,7 +656,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Height I"
+                        android:text="Height pos I"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp" />
@@ -658,17 +674,17 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Height D"
+                        android:text="Height neg I"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
                         android:textSize="16dp" />
                     <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderHeightDer"
+                        android:id="@+id/sliderHeightNegInt"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.heightDerCoef}"
+                        app:position="@{viewmodel.controls.heightNegativeIntCoef}"
                         app:orientation="horizontal"
                         app:positionChangeMultiplier="0.1"
                         app:fractionDigits="3"
@@ -679,8 +695,7 @@
                         android:text="Height I Limit"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
+                        android:textSize="16dp"/>
                     <com.example.flyingandroidclient.Slider
                         android:id="@+id/sliderHeightILimit"
                         android:layout_width="match_parent"
@@ -808,8 +823,7 @@
                         android:text="Yaw I Limit"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
+                        android:textSize="16dp"/>
                     <com.example.flyingandroidclient.Slider
                         android:id="@+id/sliderYawILimit"
                         android:layout_width="match_parent"
@@ -1137,6 +1151,15 @@
                     android:layout_height="wrap_content"
                     android:text="@{`battery ` + viewmodel.info.batteryVoltageFormatted + ` V`}"
                     tools:text="battery 12.6 V"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{`gyro noise ` + viewmodel.info.pitchGyroNoise + ` ` + viewmodel.info.rollGyroNoise + ` ` + viewmodel.info.yawGyroNoise}"
+                    tools:text="gyro noise 0.0 0.0 0.0"
                     android:textAlignment="center"
                     android:gravity="center_horizontal"
                     android:textSize="16dp"

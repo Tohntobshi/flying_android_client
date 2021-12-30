@@ -36,6 +36,7 @@ class TweaksFragment : Fragment() {
         binding.sliderHeightProp.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setHeightPropCoef(value, isLast) }
         binding.sliderHeightDer.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setHeightDerCoef(value, isLast) }
         binding.sliderHeightInt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setHeightIntCoef(value, isLast) }
+        binding.sliderHeightNegInt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setHeightNegativeIntCoef(value, isLast) }
         binding.sliderTurnOffInclineAngle.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setTurnOffInclineAngle(value, isLast) }
         binding.sliderYawProp.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setYawPropCoef(value, isLast) }
         binding.sliderYawDer.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setYawDerCoef(value, isLast) }

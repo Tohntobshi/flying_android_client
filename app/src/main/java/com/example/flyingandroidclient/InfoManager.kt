@@ -41,6 +41,39 @@ class InfoManager {
     val yawErrInt = MutableLiveData<Float>(0.0f)
     val pidLoopFreq = MutableLiveData<Float>(0.0f)
 
+    val pitchGyroNoise = Transformations.map(pitchErrorChangeRates) {
+        if (it.size < 1) return@map 0f
+        var min = it[0]
+        var max = it[0]
+        it.forEach {
+            if (it < min) min = it
+            if (it > max) max = it
+        }
+        max - min
+    }
+
+    val rollGyroNoise = Transformations.map(rollErrorChangeRates) {
+        if (it.size < 1) return@map 0f
+        var min = it[0]
+        var max = it[0]
+        it.forEach {
+            if (it < min) min = it
+            if (it > max) max = it
+        }
+        max - min
+    }
+
+    val yawGyroNoise = Transformations.map(yawErrorChangeRates) {
+        if (it.size < 1) return@map 0f
+        var min = it[0]
+        var max = it[0]
+        it.forEach {
+            if (it < min) min = it
+            if (it > max) max = it
+        }
+        max - min
+    }
+
     val landingFlag = MutableLiveData<Boolean>(false)
 
     val batteryVoltage = MutableLiveData<Float>(0.0f)
