@@ -18,6 +18,7 @@
         </attr>
     </declare-styleable>
     <declare-styleable name="AccelerationSlider">
+        <attr name="maxDesiredHeight" format="float" />
         <attr name="desiredHeight" format="float" />
         <attr name="mode" format="enum" />
         <attr name="relativeAcc" format="float" />

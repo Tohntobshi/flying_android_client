@@ -16,9 +16,9 @@
         <entry key="app/src/main/res/layout/device_list_element.xml" value="0.19427083333333334" />
         <entry key="app/src/main/res/layout/fragment_options.xml" value="0.19427083333333334" />
         <entry key="app/src/main/res/layout/fragment_primary_contols.xml" value="0.19427083333333334" />
-        <entry key="app/src/main/res/layout/fragment_primary_controls.xml" value="0.246875" />
+        <entry key="app/src/main/res/layout/fragment_primary_controls.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_tabs.xml" value="0.19427083333333334" />
-        <entry key="app/src/main/res/layout/fragment_tweaks.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_tweaks.xml" value="0.2" />
       </map>
     </option>
   </component>

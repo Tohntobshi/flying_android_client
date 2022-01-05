@@ -58,6 +58,20 @@ class TweaksFragment : Fragment() {
         binding.sliderPLossCurveB.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPowerLossCurveB(value, isLast) }
         binding.sliderMCurveA.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setMotorCurveA(value, isLast) }
         binding.sliderMCurveB.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setMotorCurveB(value, isLast) }
+
+        binding.sliderBarHeightFilt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setBarHeightFiltering(value, isLast) }
+        binding.sliderBarHeightDerFilt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setBarHeightDerFiltering(value, isLast) }
+        binding.sliderPosFilt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPositionFiltering(value, isLast) }
+        binding.sliderPosDerFilt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPositionDerFiltering(value, isLast) }
+
+        binding.sliderBarHeightProp.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setBarHeightPropCoef(value, isLast) }
+        binding.sliderBarHeightDer.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setBarHeightDerCoef(value, isLast) }
+        binding.sliderBarHeightInt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setBarHeightIntCoef(value, isLast) }
+
+        binding.sliderPosProp.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPositionPropCoef(value, isLast) }
+        binding.sliderPosInt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPositionIntCoef(value, isLast) }
+        binding.sliderPosDer.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPositionDerCoef(value, isLast) }
+        binding.sliderPosILimit.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPositionIntLimit(value, isLast) }
         return binding.root
     }
 

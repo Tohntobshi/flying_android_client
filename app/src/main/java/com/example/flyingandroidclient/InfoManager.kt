@@ -3,10 +3,7 @@ package com.example.flyingandroidclient
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.nio.ByteBuffer
-import kotlin.math.roundToInt
 
 fun <T> MutableList<T>.addNotExceed(element: T, maxSize: Int) {
     this.add(element)
@@ -22,6 +19,21 @@ class InfoManager {
     val heightErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
     val yawErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val yawErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
+
+    val posXErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
+    val posYErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
+    val posXErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
+    val posYErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
+
+    val posXError = MutableLiveData<Float>(0.0f)
+    val posYError = MutableLiveData<Float>(0.0f)
+    val posXErrorDer = MutableLiveData<Float>(0.0f)
+    val posYErrorDer = MutableLiveData<Float>(0.0f)
+    val posXErrorInt = MutableLiveData<Float>(0.0f)
+    val posYErrorInt = MutableLiveData<Float>(0.0f)
+
+    val positionValidity = MutableLiveData<Boolean>(false)
+    val numSatellites = MutableLiveData<Int>(0)
 
     val frontLeft = MutableLiveData<Int>(0)
     val frontRight = MutableLiveData<Int>(0)
@@ -89,7 +101,7 @@ class InfoManager {
 
     fun onMessage (data: ByteArray): Unit {
         if (data.size < 1) return
-        if (data[0] == MessageTypes.SECONDARY_INFO.ordinal.toByte() && data.size == 73) {
+        if (data[0] == MessageTypes.SECONDARY_INFO.ordinal.toByte() && data.size == 97) {
             val currentPitchError = ByteBuffer.wrap(data, 1, 4).float
             val currentRollError = ByteBuffer.wrap(data, 5, 4).float
 
@@ -116,6 +128,13 @@ class InfoManager {
 
             val currentVoltage = ByteBuffer.wrap(data, 69, 4).float
 
+            val currentPosXError = ByteBuffer.wrap(data, 73, 4).float
+            val currentPosYError  = ByteBuffer.wrap(data, 77, 4).float
+            val posXErrorChangeRate  = ByteBuffer.wrap(data, 81, 4).float
+            val posYErrorChangeRate = ByteBuffer.wrap(data, 85, 4).float
+            val currentPosXErrInt = ByteBuffer.wrap(data, 89, 4).float
+            val currentPosYErrInt = ByteBuffer.wrap(data, 93, 4).float
+
             addToList(currentPitchError, pitchErrors)
             addToList(currentRollError, rollErrors)
 
@@ -127,6 +146,13 @@ class InfoManager {
 
             addToList(currentYawError, yawErrors)
             addToList(yawErrorChangeRate, yawErrorChangeRates)
+
+            addToList(currentPosXError, posXErrors)
+            addToList(currentPosYError, posYErrors)
+
+            addToList(posXErrorChangeRate, posXErrorChangeRates)
+            addToList(posYErrorChangeRate, posYErrorChangeRates)
+
             frontLeft.value = frontLeftVal
             frontRight.value = frontRightVal
             backLeft.value = backLeftVal
@@ -150,11 +176,19 @@ class InfoManager {
 
             batteryVoltage.value = currentVoltage
 
+            posXError.value = currentPosXError
+            posYError.value = currentPosYError
+            posXErrorDer.value = posXErrorChangeRate
+            posYErrorDer.value = posYErrorChangeRate
+            posXErrorInt.value = currentPosXErrInt
+            posYErrorInt.value = currentPosYErrInt
             return
         }
-        if (data[0] == MessageTypes.PRIMARY_INFO.ordinal.toByte() && data.size == 6) {
+        if (data[0] == MessageTypes.PRIMARY_INFO.ordinal.toByte() && data.size == 11) {
             landingFlag.value = data[1] != 0.toByte()
             batteryVoltage.value = ByteBuffer.wrap(data, 2, 4).float
+            positionValidity.value = data[6] != 0.toByte()
+            numSatellites.value = ByteBuffer.wrap(data, 7, 4).int
             return
         }
 

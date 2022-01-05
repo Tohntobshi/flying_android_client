@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.res.getFloatOrThrow
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -47,6 +48,27 @@ class AccelerationSlider @JvmOverloads constructor(
             invalidate()
         }
         get() = _relativeAcc
+
+    private var _maxDesiredHeight = 3f
+    var maxDesiredHeight: Float
+        set(value) {
+            _maxDesiredHeight = value
+            invalidate()
+        }
+        get() = _maxDesiredHeight
+
+    init {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.AccelerationSlider,
+            0, 0).apply {
+            try {
+                _maxDesiredHeight = try { getFloatOrThrow(R.styleable.AccelerationSlider_maxDesiredHeight) } catch (e: Exception) { 3f }
+            } finally {
+                recycle()
+            }
+        }
+    }
 
 
     private var _mode = AccelerationSliderMode.UNSET
@@ -185,7 +207,7 @@ class AccelerationSlider @JvmOverloads constructor(
         val touchPositionDeltaX = touchPositionX - dragStartTouchPositionX
         val touchPositionDeltaY = touchPositionY - dragStartTouchPositionY
         draggedDesiredHeightValue = dragStartDesiredHeight - touchPositionDeltaY / height
-        if (draggedDesiredHeightValue > 3f) draggedDesiredHeightValue = 3f
+        if (draggedDesiredHeightValue > maxDesiredHeight) draggedDesiredHeightValue = maxDesiredHeight
         if (draggedDesiredHeightValue < 0f) draggedDesiredHeightValue = 0f
         invalidate()
         for (callback in heightCallbacks) {

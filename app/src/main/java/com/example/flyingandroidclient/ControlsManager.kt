@@ -356,6 +356,66 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         usHeightDerFiltering.value = value
         sendOneFloatControl(Controls.SET_US_HEIGHT_DER_FILTERING, value, isLast)
     }
+    val positionPropCoef = MutableLiveData<Float>(0f);
+    fun setPositionPropCoef(value: Float, isLast: Boolean) {
+        positionPropCoef.value = value
+        sendOneFloatControl(Controls.SET_POSITION_PROP_COEF, value, isLast)
+    }
+    val positionDerCoef = MutableLiveData<Float>(0f);
+    fun setPositionDerCoef(value: Float, isLast: Boolean) {
+        positionDerCoef.value = value
+        sendOneFloatControl(Controls.SET_POSITION_DER_COEF, value, isLast)
+    }
+    val positionIntCoef = MutableLiveData<Float>(0f);
+    fun setPositionIntCoef(value: Float, isLast: Boolean) {
+        positionIntCoef.value = value
+        sendOneFloatControl(Controls.SET_POSITION_INT_COEF, value, isLast)
+    }
+    val positionIntLimit = MutableLiveData<Float>(0f);
+    fun setPositionIntLimit(value: Float, isLast: Boolean) {
+        positionIntLimit.value = value
+        sendOneFloatControl(Controls.SET_POSITION_I_LIMIT, value, isLast)
+    }
+    val barHeightPropCoef = MutableLiveData<Float>(0f);
+    fun setBarHeightPropCoef(value: Float, isLast: Boolean) {
+        barHeightPropCoef.value = value
+        sendOneFloatControl(Controls.SET_BAR_HEIGHT_PROP_COEF, value, isLast)
+    }
+    val barHeightDerCoef = MutableLiveData<Float>(0f);
+    fun setBarHeightDerCoef(value: Float, isLast: Boolean) {
+        barHeightDerCoef.value = value
+        sendOneFloatControl(Controls.SET_BAR_HEIGHT_DER_COEF, value, isLast)
+    }
+    val barHeightIntCoef = MutableLiveData<Float>(0f);
+    fun setBarHeightIntCoef(value: Float, isLast: Boolean) {
+        barHeightIntCoef.value = value
+        sendOneFloatControl(Controls.SET_BAR_HEIGHT_INT_COEF, value, isLast)
+    }
+    val barHeightFiltering = MutableLiveData<Float>(0f);
+    fun setBarHeightFiltering(value: Float, isLast: Boolean) {
+        barHeightFiltering.value = value
+        sendOneFloatControl(Controls.SET_BAR_HEIGHT_FILTERING, value, isLast)
+    }
+    val barHeightDerFiltering = MutableLiveData<Float>(0f);
+    fun setBarHeightDerFiltering(value: Float, isLast: Boolean) {
+        barHeightDerFiltering.value = value
+        sendOneFloatControl(Controls.SET_BAR_HEIGHT_DER_FILTERING, value, isLast)
+    }
+    val positionFiltering = MutableLiveData<Float>(0f);
+    fun setPositionFiltering(value: Float, isLast: Boolean) {
+        positionFiltering.value = value
+        sendOneFloatControl(Controls.SET_POSITION_FILTERING, value, isLast)
+    }
+    val positionDerFiltering = MutableLiveData<Float>(0f);
+    fun setPositionDerFiltering(value: Float, isLast: Boolean) {
+        positionDerFiltering.value = value
+        sendOneFloatControl(Controls.SET_POSITION_DER_FILTERING, value, isLast)
+    }
+    val holdMode = MutableLiveData<Int>(2);
+    fun setHoldMode(value: Int, isLast: Boolean) {
+        holdMode.value = value
+        sendOneIntControl(Controls.SET_HOLD_MODE, value, isLast)
+    }
     fun saveCurrentSettings() {
         with (sharedPref.edit()) {
             putFloat("PITCH_PROP_COEF", pitchPropCoef.value!!)
@@ -392,6 +452,19 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
             putFloat("POWER_LOSS_CURVE_B", powerLossCurveB.value!!)
             putFloat("MOTOR_CURVE_A", motorCurveA.value!!)
             putFloat("MOTOR_CURVE_B", motorCurveB.value!!)
+
+            putFloat("POSITION_PROP_COEF", positionPropCoef.value!!)
+            putFloat("POSITION_DER_COEF", positionDerCoef.value!!)
+            putFloat("POSITION_INT_COEF", positionIntCoef.value!!)
+            putFloat("POSITION_I_LIMIT", positionIntLimit.value!!)
+            putFloat("BAR_HEIGHT_PROP_COEF", barHeightPropCoef.value!!)
+            putFloat("BAR_HEIGHT_DER_COEF", barHeightDerCoef.value!!)
+            putFloat("BAR_HEIGHT_INT_COEF", barHeightIntCoef.value!!)
+            putFloat("BAR_HEIGHT_FILTERING", barHeightFiltering.value!!)
+            putFloat("BAR_HEIGHT_DER_FILTERING", barHeightDerFiltering.value!!)
+            putFloat("POSITION_FILTERING", positionFiltering.value!!)
+            putFloat("POSITION_DER_FILTERING", positionDerFiltering.value!!)
+            putInt("HOLD_MODE", holdMode.value!!)
             apply()
         }
     }
@@ -430,6 +503,19 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         powerLossCurveB.value = sharedPref.getFloat("POWER_LOSS_CURVE_B", 1f)
         motorCurveA.value = sharedPref.getFloat("MOTOR_CURVE_A", 0.96f)
         motorCurveB.value = sharedPref.getFloat("MOTOR_CURVE_B", 0.57f)
+        positionPropCoef.value = sharedPref.getFloat("POSITION_PROP_COEF", 0f)
+        positionDerCoef.value = sharedPref.getFloat("POSITION_DER_COEF", 0f)
+        positionIntCoef.value = sharedPref.getFloat("POSITION_INT_COEF", 0f)
+        positionIntLimit.value = sharedPref.getFloat("POSITION_I_LIMIT", 0f)
+        barHeightPropCoef.value = sharedPref.getFloat("BAR_HEIGHT_PROP_COEF", 0f)
+        barHeightDerCoef.value = sharedPref.getFloat("BAR_HEIGHT_DER_COEF", 0f)
+        barHeightIntCoef.value = sharedPref.getFloat("BAR_HEIGHT_INT_COEF", 0f)
+        barHeightFiltering.value = sharedPref.getFloat("BAR_HEIGHT_FILTERING", 0f)
+        barHeightDerFiltering.value = sharedPref.getFloat("BAR_HEIGHT_DER_FILTERING", 0f)
+        positionFiltering.value = sharedPref.getFloat("POSITION_FILTERING", 0f)
+        positionDerFiltering.value = sharedPref.getFloat("POSITION_DER_FILTERING", 0f)
+        holdMode.value = sharedPref.getInt("HOLD_MODE", 2)
+
     }
     fun sendCurrentSettings() {
         sendOneFloatControl(Controls.SET_PITCH_PROP_COEF, pitchPropCoef.value!!, true)
@@ -466,6 +552,19 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         sendOneFloatControl(Controls.SET_POWER_LOSS_CURVE_B, powerLossCurveB.value!!, true)
         sendOneFloatControl(Controls.SET_MOTOR_CURVE_A, motorCurveA.value!!, true)
         sendOneFloatControl(Controls.SET_MOTOR_CURVE_B, motorCurveB.value!!, true)
+
+        sendOneFloatControl(Controls.SET_POSITION_PROP_COEF, positionPropCoef.value!!, true)
+        sendOneFloatControl(Controls.SET_POSITION_DER_COEF, positionDerCoef.value!!, true)
+        sendOneFloatControl(Controls.SET_POSITION_INT_COEF, positionIntCoef.value!!, true)
+        sendOneFloatControl(Controls.SET_POSITION_I_LIMIT, positionIntLimit.value!!, true)
+        sendOneFloatControl(Controls.SET_BAR_HEIGHT_PROP_COEF, barHeightPropCoef.value!!, true)
+        sendOneFloatControl(Controls.SET_BAR_HEIGHT_DER_COEF, barHeightDerCoef.value!!, true)
+        sendOneFloatControl(Controls.SET_BAR_HEIGHT_INT_COEF, barHeightIntCoef.value!!, true)
+        sendOneFloatControl(Controls.SET_BAR_HEIGHT_FILTERING, barHeightFiltering.value!!, true)
+        sendOneFloatControl(Controls.SET_BAR_HEIGHT_DER_FILTERING, barHeightDerFiltering.value!!, true)
+        sendOneFloatControl(Controls.SET_POSITION_FILTERING, positionFiltering.value!!, true)
+        sendOneFloatControl(Controls.SET_POSITION_DER_FILTERING, positionDerFiltering.value!!, true)
+        sendOneIntControl(Controls.SET_HOLD_MODE, holdMode.value!!, true)
     }
 
 
