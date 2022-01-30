@@ -411,10 +411,13 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         positionDerFiltering.value = value
         sendOneFloatControl(Controls.SET_POSITION_DER_FILTERING, value, isLast)
     }
-    val holdMode = MutableLiveData<Int>(2);
-    fun setHoldMode(value: Int, isLast: Boolean) {
+    val holdMode = MutableLiveData<Int>(1);
+    fun setHoldMode(value: Int) {
         holdMode.value = value
-        sendOneIntControl(Controls.SET_HOLD_MODE, value, isLast)
+        sendOneIntControl(Controls.SET_HOLD_MODE, value, true)
+    }
+    fun samplePositionCamera() {
+        sendControl(Controls.TAKE_POSITION_CAMERA_SHOT)
     }
     fun saveCurrentSettings() {
         with (sharedPref.edit()) {
@@ -514,7 +517,7 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         barHeightDerFiltering.value = sharedPref.getFloat("BAR_HEIGHT_DER_FILTERING", 0f)
         positionFiltering.value = sharedPref.getFloat("POSITION_FILTERING", 0f)
         positionDerFiltering.value = sharedPref.getFloat("POSITION_DER_FILTERING", 0f)
-        holdMode.value = sharedPref.getInt("HOLD_MODE", 2)
+        holdMode.value = sharedPref.getInt("HOLD_MODE", 1)
 
     }
     fun sendCurrentSettings() {

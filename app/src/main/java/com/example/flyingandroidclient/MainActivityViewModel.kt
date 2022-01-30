@@ -24,6 +24,55 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val info = InfoManager()
     val vibrator = application.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
+    val isPresetsSpoilerOpen = MutableLiveData<Boolean>(false)
+    fun togglePresetsSpoiler() {
+        isPresetsSpoilerOpen.value = !isPresetsSpoilerOpen.value!!
+    }
+
+    val isSafetySpoilerOpen = MutableLiveData<Boolean>(false)
+    fun toggleSafetySpoiler() {
+        isSafetySpoilerOpen.value = !isSafetySpoilerOpen.value!!
+    }
+
+    val isInclineSpoilerOpen = MutableLiveData<Boolean>(false)
+    fun toggleInclineSpoiler() {
+        isInclineSpoilerOpen.value = !isInclineSpoilerOpen.value!!
+    }
+
+    val isFilteringSpoilerOpen = MutableLiveData<Boolean>(false)
+    fun toggleFilteringSpoiler() {
+        isFilteringSpoilerOpen.value = !isFilteringSpoilerOpen.value!!
+    }
+
+    val isHeightSpoilerOpen = MutableLiveData<Boolean>(false)
+    fun toggleHeightSpoiler() {
+        isHeightSpoilerOpen.value = !isHeightSpoilerOpen.value!!
+    }
+
+    val isYawSpoilerOpen = MutableLiveData<Boolean>(false)
+    fun toggleYawSpoiler() {
+        isYawSpoilerOpen.value = !isYawSpoilerOpen.value!!
+    }
+
+    val isPositionSpoilerOpen = MutableLiveData<Boolean>(false)
+    fun togglePositionSpoiler() {
+        isPositionSpoilerOpen.value = !isPositionSpoilerOpen.value!!
+    }
+
+    val isLinearizationSpoilerOpen = MutableLiveData<Boolean>(false)
+    fun toggleLinearizationSpoiler() {
+        isLinearizationSpoilerOpen.value = !isLinearizationSpoilerOpen.value!!
+    }
+
+    val isOtherInfoSpoilerOpen = MutableLiveData<Boolean>(false)
+    fun toggleOtherInfoSpoiler() {
+        isOtherInfoSpoilerOpen.value = !isOtherInfoSpoilerOpen.value!!
+    }
+
+    val isCalibrationSpoilerOpen = MutableLiveData<Boolean>(false)
+    fun toggleCalibrationSpoiler() {
+        isCalibrationSpoilerOpen.value = !isCalibrationSpoilerOpen.value!!
+    }
 
     fun onAccSliderModeChange(value: AccelerationSliderMode) {
         // only switch to relative acc mode now

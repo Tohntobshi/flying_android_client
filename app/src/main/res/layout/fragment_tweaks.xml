@@ -7,6 +7,8 @@
         <variable
             name="viewmodel"
             type="com.example.flyingandroidclient.MainActivityViewModel" />
+        <import type="android.view.View" />
+        <import type="com.example.flyingandroidclient.R" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -17,18 +19,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Preset"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:textSize="25dp"
-                android:layout_marginTop="20dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:onClick="@{() -> viewmodel.togglePresetsSpoiler()}"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@{viewmodel.isPresetsSpoilerOpen ? @color/gray666 : @color/gray555}"
+                android:paddingRight="5dp"
+                android:paddingLeft="15dp"
+                android:paddingVertical="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PRESET"
+                    android:textSize="25dp"
+                    android:textColor="@color/white"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/down_arrow"
+                    android:rotation="@{viewmodel.isPresetsSpoilerOpen ? 180 : 0 }"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="@{viewmodel.isPresetsSpoilerOpen ? View.VISIBLE : View.GONE}">
                 <Button
                     android:layout_weight="1"
                     android:layout_height="40dp"
@@ -52,19 +76,41 @@
                     android:onClick="@{() -> viewmodel.controls.sendCurrentSettings()}" />
 
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Safety settings"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:textSize="25dp"
-                android:layout_marginTop="50dp" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:onClick="@{() -> viewmodel.toggleSafetySpoiler()}"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@{viewmodel.isSafetySpoilerOpen ? @color/gray666 : @color/gray555}"
+                android:paddingRight="5dp"
+                android:paddingLeft="15dp"
+                android:paddingVertical="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SAFETY SETTINGS"
+                    android:textSize="25dp"
+                    android:textColor="@color/white"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/down_arrow"
+                    android:rotation="@{viewmodel.isSafetySpoilerOpen ? 180 : 0 }"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:visibility="@{viewmodel.isSafetySpoilerOpen ? View.VISIBLE : View.GONE}">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -98,291 +144,340 @@
                     android:layout_gravity="bottom"
                     android:onClick="@{() -> viewmodel.controls.resetTurnOffTrigger()}" />
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Incline settings"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:textSize="25dp"
-                android:layout_marginTop="50dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:onClick="@{() -> viewmodel.toggleInclineSpoiler()}"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@{viewmodel.isInclineSpoilerOpen ? @color/gray666 : @color/gray555}"
+                android:paddingRight="5dp"
+                android:paddingLeft="15dp"
+                android:paddingVertical="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="50dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="&lt;B Pitch Adjust F&gt;"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderPitchAdjust"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.pitchAdjust}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"/>
-                </LinearLayout>
-                <LinearLayout
+                    android:text="INCLINE SETTINGS"
+                    android:textSize="25dp"
+                    android:textColor="@color/white"/>
+                <View
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="50dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="&lt;L Roll Adjust R&gt;"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderRollAdjust"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.rollAdjust}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"/>
-                </LinearLayout>
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/down_arrow"
+                    android:rotation="@{viewmodel.isInclineSpoilerOpen ? 180 : 0 }"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="vertical"
+                android:visibility="@{viewmodel.isInclineSpoilerOpen ? View.VISIBLE : View.GONE}">
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="50dp">
-                    <TextView
-                        android:layout_width="match_parent"
+                    android:orientation="horizontal" >
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@{`Pitch err ` + viewmodel.info.pitchErr}"
-                        tools:text="Pitch err"
-                        android:textAlignment="center"
-                        android:textSize="16dp"
-                        android:gravity="center_horizontal" />
-                    <com.example.flyingandroidclient.Plot
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        app:plotData="@{viewmodel.info.pitchErrors}"/>
-                    <TextView
-                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="50dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="&lt;B Pitch Adjust F&gt;"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"
+                            android:layout_marginTop="10dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderPitchAdjust"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.pitchAdjust}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        tools:text="Pitch err der"
-                        android:text="@{`Pitch err der ` + viewmodel.info.pitchErrDer}"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"/>
-                    <com.example.flyingandroidclient.Plot
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        app:plotData="@{viewmodel.info.pitchErrorChangeRates}" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:text="Pitch err int"
-                        android:text="@{`Pitch err int ` + viewmodel.info.pitchErrInt}"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Pitch P I D"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderPitchProp"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.pitchPropCoef}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderPitchInt"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.pitchIntCoef}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderPitchDer"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.pitchDerCoef}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Pitch I Limit"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderPitchILimit"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.pitchIntLimit}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"
-                        app:maxValue="1"/>
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="50dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="&lt;L Roll Adjust R&gt;"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"
+                            android:layout_marginTop="10dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderRollAdjust"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.rollAdjust}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"/>
+                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="50dp"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
+                    android:orientation="horizontal" >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{`Roll err ` + viewmodel.info.rollErr}"
-                        tools:text="Roll err"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp" />
-                    <com.example.flyingandroidclient.Plot
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        app:plotData="@{viewmodel.info.rollErrors}" />
-                    <TextView
-                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="50dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{`Pitch err ` + viewmodel.info.pitchErr}"
+                            tools:text="Pitch err"
+                            android:textAlignment="center"
+                            android:textSize="16dp"
+                            android:gravity="center_horizontal" />
+                        <com.example.flyingandroidclient.Plot
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            app:plotData="@{viewmodel.info.pitchErrors}"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Pitch err der"
+                            android:text="@{`Pitch err der ` + viewmodel.info.pitchErrDer}"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"/>
+                        <com.example.flyingandroidclient.Plot
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            app:plotData="@{viewmodel.info.pitchErrorChangeRates}" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Pitch err int"
+                            android:text="@{`Pitch err int ` + viewmodel.info.pitchErrInt}"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Pitch P I D"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"
+                            android:layout_marginTop="10dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderPitchProp"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.pitchPropCoef}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderPitchInt"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.pitchIntCoef}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderPitchDer"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.pitchDerCoef}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Pitch I Limit"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderPitchILimit"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.pitchIntLimit}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"
+                            app:maxValue="1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Roll err der"
-                        android:text="@{`Roll err der ` + viewmodel.info.rollErrDer}"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp" />
-                    <com.example.flyingandroidclient.Plot
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        app:plotData="@{viewmodel.info.rollErrorChangeRates}" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:text="Roll err int"
-                        android:text="@{`Roll err int ` + viewmodel.info.rollErrInt}"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Roll P I D"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderRollProp"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.rollPropCoef}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderRollInt"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.rollIntCoef}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderRollDer"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.rollDerCoef}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Roll I Limit"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderRollILimit"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.rollIntLimit}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"
-                        app:maxValue="1"/>
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="50dp"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{`Roll err ` + viewmodel.info.rollErr}"
+                            tools:text="Roll err"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp" />
+                        <com.example.flyingandroidclient.Plot
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            app:plotData="@{viewmodel.info.rollErrors}" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Roll err der"
+                            android:text="@{`Roll err der ` + viewmodel.info.rollErrDer}"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp" />
+                        <com.example.flyingandroidclient.Plot
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            app:plotData="@{viewmodel.info.rollErrorChangeRates}" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Roll err int"
+                            android:text="@{`Roll err int ` + viewmodel.info.rollErrInt}"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Roll P I D"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"
+                            android:layout_marginTop="10dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderRollProp"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.rollPropCoef}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderRollInt"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.rollIntCoef}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderRollDer"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.rollDerCoef}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Roll I Limit"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderRollILimit"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.rollIntLimit}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"
+                            app:maxValue="1"/>
+                    </LinearLayout>
                 </LinearLayout>
-
-
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Filtering"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:textSize="25dp"
-                android:layout_marginTop="50dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:onClick="@{() -> viewmodel.toggleFilteringSpoiler()}"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@{viewmodel.isFilteringSpoilerOpen ? @color/gray666 : @color/gray555}"
+                android:paddingRight="5dp"
+                android:paddingLeft="15dp"
+                android:paddingVertical="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FILTERING"
+                    android:textSize="25dp"
+                    android:textColor="@color/white"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/down_arrow"
+                    android:rotation="@{viewmodel.isFilteringSpoilerOpen ? 180 : 0 }"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="@{viewmodel.isFilteringSpoilerOpen ? View.VISIBLE : View.GONE}">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -609,19 +704,41 @@
                         app:maxValue="1"/>
                 </LinearLayout>
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Height settings"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:textSize="25dp"
-                android:layout_marginTop="50dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:onClick="@{() -> viewmodel.toggleHeightSpoiler()}"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@{viewmodel.isHeightSpoilerOpen ? @color/gray666 : @color/gray555}"
+                android:paddingRight="5dp"
+                android:paddingLeft="15dp"
+                android:paddingVertical="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HEIGHT SETTINGS"
+                    android:textSize="25dp"
+                    android:textColor="@color/white"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/down_arrow"
+                    android:rotation="@{viewmodel.isHeightSpoilerOpen ? 180 : 0 }"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="@{viewmodel.isHeightSpoilerOpen ? View.VISIBLE : View.GONE}">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -848,18 +965,40 @@
                         app:minValue="0" />
                 </LinearLayout>
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Yaw settings"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:textSize="25dp"
-                android:layout_marginTop="50dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:onClick="@{() -> viewmodel.toggleYawSpoiler()}"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@{viewmodel.isYawSpoilerOpen ? @color/gray666 : @color/gray555}"
+                android:paddingRight="5dp"
+                android:paddingLeft="15dp"
+                android:paddingVertical="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="YAW SETTINGS"
+                    android:textSize="25dp"
+                    android:textColor="@color/white"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/down_arrow"
+                    android:rotation="@{viewmodel.isYawSpoilerOpen ? 180 : 0 }"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="@{viewmodel.isYawSpoilerOpen ? View.VISIBLE : View.GONE}">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -868,7 +1007,7 @@
                     android:orientation="vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="50dp"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginVertical="20dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -977,18 +1116,40 @@
                 </LinearLayout>
 
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Position settings"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:textSize="25dp"
-                android:layout_marginTop="50dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:onClick="@{() -> viewmodel.togglePositionSpoiler()}"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@{viewmodel.isPositionSpoilerOpen ? @color/gray666 : @color/gray555}"
+                android:paddingRight="5dp"
+                android:paddingLeft="15dp"
+                android:paddingVertical="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="POSITION SETTINGS"
+                    android:textSize="25dp"
+                    android:textColor="@color/white"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/down_arrow"
+                    android:rotation="@{viewmodel.isPositionSpoilerOpen ? 180 : 0 }"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="@{viewmodel.isPositionSpoilerOpen ? View.VISIBLE : View.GONE}">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -1008,7 +1169,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         app:plotData="@{viewmodel.info.posXErrors}"
-                        app:valueRange="30"/>
+                        app:valueRange="1"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1021,7 +1182,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         app:plotData="@{viewmodel.info.posXErrorChangeRates}"
-                        app:valueRange="30"/>
+                        app:valueRange="1"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1055,8 +1216,7 @@
                         android:text="Position D"
                         android:textAlignment="center"
                         android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
+                        android:textSize="16dp"/>
                     <com.example.flyingandroidclient.Slider
                         android:id="@+id/sliderPosDer"
                         android:layout_width="match_parent"
@@ -1089,7 +1249,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         app:plotData="@{viewmodel.info.posYErrors}"
-                        app:valueRange="30"/>
+                        app:valueRange="1"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1102,7 +1262,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         app:plotData="@{viewmodel.info.posYErrorChangeRates}"
-                        app:valueRange="30"/>
+                        app:valueRange="1"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1151,285 +1311,332 @@
                         app:maxValue="1"/>
                 </LinearLayout>
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Linearization"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:textSize="25dp"
-                android:layout_marginTop="50dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Describe voltage drop as curve y = a * x ^ b by adjusting a and b,\n where y - voltage drop from inactive state,\n and x - average motor vals between 0 and 1"
-                android:textAlignment="center"
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp"
-                android:gravity="center_horizontal"
-                android:textSize="16dp"
-                android:layout_marginTop="10dp"/>
-            <com.example.flyingandroidclient.CurvePlot
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:xSpan="1"
-                app:xMinLabel="0%"
-                app:xLabel="motor"
-                app:xMaxLabel="100%"
-                app:ySpan="3"
-                app:yMinLabel="0V"
-                app:yLabel="V drop"
-                app:yMaxLabel="3V"
-                app:a="@{viewmodel.controls.voltageDropCurveA}"
-                app:b="@{viewmodel.controls.voltageDropCurveB}"
-                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                android:orientation="horizontal"
+                android:onClick="@{() -> viewmodel.toggleLinearizationSpoiler()}"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@{viewmodel.isLinearizationSpoilerOpen ? @color/gray666 : @color/gray555}"
+                android:paddingRight="5dp"
+                android:paddingLeft="15dp"
+                android:paddingVertical="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Volt drop curve coef A"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderVDropCurveA"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.voltageDropCurveA}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                </LinearLayout>
-                <LinearLayout
+                    android:text="LINEARIZATION"
+                    android:textSize="25dp"
+                    android:textColor="@color/white"/>
+                <View
                     android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Volt drop curve coef B"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderVDropCurveB"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.voltageDropCurveB}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                </LinearLayout>
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/down_arrow"
+                    android:rotation="@{viewmodel.isLinearizationSpoilerOpen ? 180 : 0 }"/>
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Describe power loss as curve y = a * x ^ b by adjusting a and b,\n where y - power loss in percentage from fully charged state (mapped to 0 an 1),\n and x is battery voltage between 12.6V and 10.5V mapped to 0 and 1"
-                android:textAlignment="center"
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp"
-                android:gravity="center_horizontal"
-                android:textSize="16dp"
-                android:layout_marginTop="30dp"/>
-            <com.example.flyingandroidclient.CurvePlot
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:xSpan="1"
-                app:xMinLabel="12.6V"
-                app:xLabel="voltage"
-                app:xMaxLabel="10.5V"
-                app:ySpan="1"
-                app:yMinLabel="0%"
-                app:yLabel="pow loss"
-                app:yMaxLabel="100%"
-                app:a="@{viewmodel.controls.powerLossCurveA}"
-                app:b="@{viewmodel.controls.powerLossCurveB}"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Power loss curve coef A"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderPLossCurveA"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.powerLossCurveA}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Power loss curve coef B"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderPLossCurveB"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.powerLossCurveB}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Describe motor respone as curve y = a * x ^ b by adjusting a and b,\n where y - signal to motor between 0 and 1,\n and x is actual output between 0 and 1"
-                android:textAlignment="center"
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp"
-                android:gravity="center_horizontal"
-                android:textSize="16dp"
-                android:layout_marginTop="30dp"/>
-            <com.example.flyingandroidclient.CurvePlot
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:xSpan="1"
-                app:xMinLabel="0%"
-                app:xLabel="output"
-                app:xMaxLabel="100%"
-                app:ySpan="1"
-                app:yMinLabel="0%"
-                app:yLabel="signal"
-                app:yMaxLabel="100%"
-                app:a="@{viewmodel.controls.motorCurveA}"
-                app:b="@{viewmodel.controls.motorCurveB}"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Motor curve coef A"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderMCurveA"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.motorCurveA}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Motor curve coef B"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:textSize="16dp"
-                        android:layout_marginTop="10dp"/>
-                    <com.example.flyingandroidclient.Slider
-                        android:id="@+id/sliderMCurveB"
-                        android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        app:position="@{viewmodel.controls.motorCurveB}"
-                        app:orientation="horizontal"
-                        app:positionChangeMultiplier="0.1"
-                        app:fractionDigits="3"
-                        app:minValue="0"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Other info"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:textSize="25dp"
-                android:layout_marginTop="50dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="10dp">
+                android:visibility="@{viewmodel.isLinearizationSpoilerOpen ? View.VISIBLE : View.GONE}">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Describe voltage drop as curve y = a * x ^ b by adjusting a and b,\n where y - voltage drop from inactive state,\n and x - average motor vals between 0 and 1"
+                    android:textAlignment="center"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp"
+                    android:layout_marginTop="10dp"/>
+                <com.example.flyingandroidclient.CurvePlot
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:xSpan="1"
+                    app:xMinLabel="0%"
+                    app:xLabel="motor"
+                    app:xMaxLabel="100%"
+                    app:ySpan="3"
+                    app:yMinLabel="0V"
+                    app:yLabel="V drop"
+                    app:yMaxLabel="3V"
+                    app:a="@{viewmodel.controls.voltageDropCurveA}"
+                    app:b="@{viewmodel.controls.voltageDropCurveB}"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Volt drop curve coef A"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"
+                            android:layout_marginTop="10dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderVDropCurveA"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.voltageDropCurveA}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Volt drop curve coef B"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"
+                            android:layout_marginTop="10dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderVDropCurveB"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.voltageDropCurveB}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Describe power loss as curve y = a * x ^ b by adjusting a and b,\n where y - power loss in percentage from fully charged state (mapped to 0 an 1),\n and x is battery voltage between 12.6V and 10.5V mapped to 0 and 1"
+                    android:textAlignment="center"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp"
+                    android:layout_marginTop="30dp"/>
+                <com.example.flyingandroidclient.CurvePlot
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:xSpan="1"
+                    app:xMinLabel="12.6V"
+                    app:xLabel="voltage"
+                    app:xMaxLabel="10.5V"
+                    app:ySpan="1"
+                    app:yMinLabel="0%"
+                    app:yLabel="pow loss"
+                    app:yMaxLabel="100%"
+                    app:a="@{viewmodel.controls.powerLossCurveA}"
+                    app:b="@{viewmodel.controls.powerLossCurveB}"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Power loss curve coef A"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"
+                            android:layout_marginTop="10dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderPLossCurveA"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.powerLossCurveA}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Power loss curve coef B"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"
+                            android:layout_marginTop="10dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderPLossCurveB"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.powerLossCurveB}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Describe motor respone as curve y = a * x ^ b by adjusting a and b,\n where y - signal to motor between 0 and 1,\n and x is actual output between 0 and 1"
+                    android:textAlignment="center"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="16dp"
+                    android:layout_marginTop="30dp"/>
+                <com.example.flyingandroidclient.CurvePlot
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:xSpan="1"
+                    app:xMinLabel="0%"
+                    app:xLabel="output"
+                    app:xMaxLabel="100%"
+                    app:ySpan="1"
+                    app:yMinLabel="0%"
+                    app:yLabel="signal"
+                    app:yMaxLabel="100%"
+                    app:a="@{viewmodel.controls.motorCurveA}"
+                    app:b="@{viewmodel.controls.motorCurveB}"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Motor curve coef A"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"
+                            android:layout_marginTop="10dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderMCurveA"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.motorCurveA}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Motor curve coef B"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:textSize="16dp"
+                            android:layout_marginTop="10dp"/>
+                        <com.example.flyingandroidclient.Slider
+                            android:id="@+id/sliderMCurveB"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            app:position="@{viewmodel.controls.motorCurveB}"
+                            app:orientation="horizontal"
+                            app:positionChangeMultiplier="0.1"
+                            app:fractionDigits="3"
+                            app:minValue="0"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:onClick="@{() -> viewmodel.toggleOtherInfoSpoiler()}"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@{viewmodel.isOtherInfoSpoilerOpen ? @color/gray666 : @color/gray555}"
+                android:paddingRight="5dp"
+                android:paddingLeft="15dp"
+                android:paddingVertical="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OTHER INFO"
+                    android:textSize="25dp"
+                    android:textColor="@color/white"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/down_arrow"
+                    android:rotation="@{viewmodel.isOtherInfoSpoilerOpen ? 180 : 0 }"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:visibility="@{viewmodel.isOtherInfoSpoilerOpen ? View.VISIBLE : View.GONE}">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1475,14 +1682,43 @@
                     android:gravity="center_horizontal"
                     android:textSize="16dp"
                     android:layout_marginTop="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:onClick="@{() -> viewmodel.toggleCalibrationSpoiler()}"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:background="@{viewmodel.isCalibrationSpoilerOpen ? @color/gray666 : @color/gray555}"
+                android:paddingRight="5dp"
+                android:paddingLeft="15dp"
+                android:paddingVertical="5dp">
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Calibration"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal"
+                    android:text="CALIBRATION"
                     android:textSize="25dp"
-                    android:layout_marginTop="50dp" />
+                    android:textColor="@color/white"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/down_arrow"
+                    android:rotation="@{viewmodel.isCalibrationSpoilerOpen ? 180 : 0 }"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:visibility="@{viewmodel.isCalibrationSpoilerOpen ? View.VISIBLE : View.GONE}">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

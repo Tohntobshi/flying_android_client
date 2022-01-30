@@ -44,6 +44,10 @@ class PrimaryControlsFragment : Fragment() {
             model.controls.setRelativeAcceleration(value, isLast)
         }
 
+        binding.holdSwitch.setOnCheckedChangeListener { _, isChecked ->
+            model.controls.setHoldMode(if (isChecked) 1 else 0)
+        }
+
         return binding.root
     }
 

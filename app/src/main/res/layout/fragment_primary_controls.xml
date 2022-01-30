@@ -41,7 +41,7 @@
             app:desiredHeight="@{viewmodel.controls.height}"
             app:mode="@{viewmodel.accSliderMode}"
             app:relativeAcc="@{viewmodel.controls.relativeAcceleration}"
-            app:maxDesiredHeight="0.3"
+            app:maxDesiredHeight="3"
             />
 
         <TextView
@@ -57,5 +57,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:gravity="center_horizontal" />
+
+        <Switch
+            android:id="@+id/holdSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginBottom="32dp"
+            android:text="pos hold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:checked="@{viewmodel.controls.holdMode == 1}"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginBottom="16dp"
+            android:text="sample pos cam"
+            app:layout_constraintBottom_toTopOf="@+id/holdSwitch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{() -> viewmodel.controls.samplePositionCamera()}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
