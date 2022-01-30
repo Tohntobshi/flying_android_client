@@ -63,22 +63,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginTop="10dp"
+            android:checked="@{viewmodel.controls.holdMode == 1}"
             android:text="pos hold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:checked="@{viewmodel.controls.holdMode == 1}"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <Button
+            android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="20dp"
+            android:onClick="@{() -> viewmodel.controls.samplePositionCamera()}"
             android:text="sample pos cam"
-            app:layout_constraintBottom_toTopOf="@+id/holdSwitch"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Switch
+            android:id="@+id/recordDataSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="record data"
+            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{() -> viewmodel.controls.samplePositionCamera()}"/>
+            android:checked="@{viewmodel.controls.recordFlightData}"
+            android:layout_marginLeft="100dp"
+            android:layout_marginBottom="16dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

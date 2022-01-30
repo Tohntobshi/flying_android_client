@@ -47,6 +47,9 @@ class PrimaryControlsFragment : Fragment() {
         binding.holdSwitch.setOnCheckedChangeListener { _, isChecked ->
             model.controls.setHoldMode(if (isChecked) 1 else 0)
         }
+        binding.recordDataSwitch.setOnCheckedChangeListener { _, isChecked ->
+            model.controls.setRecordFlightData(isChecked)
+        }
 
         return binding.root
     }

@@ -1228,6 +1228,24 @@
                         app:positionChangeMultiplier="0.1"
                         app:fractionDigits="3"
                         app:minValue="0"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Joystick sensitivity"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textSize="16dp"/>
+                    <com.example.flyingandroidclient.Slider
+                        android:id="@+id/sliderJoystickSensitivity"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        app:position="@{viewmodel.controls.joystickSensitivity}"
+                        app:orientation="horizontal"
+                        app:positionChangeMultiplier="1"
+                        app:fractionDigits="1"
+                        app:minValue="0"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"

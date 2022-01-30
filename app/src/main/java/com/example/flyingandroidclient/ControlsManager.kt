@@ -133,7 +133,9 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
             sendTwoFloatControl(Controls.MOVE, x, y, isLast)
             return
         }
-        sendTwoFloatControl(Controls.MOVE, coord.x, coord.y, isLast)
+        val x = coord.x * joystickSensitivity.value!!
+        val y = coord.y * joystickSensitivity.value!!
+        sendTwoFloatControl(Controls.MOVE, x, y, isLast)
     }
     val pitchPropCoef = MutableLiveData<Float>(0f)
     fun setPitchPropCoef(value: Float, isLast: Boolean) {
@@ -419,6 +421,15 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
     fun samplePositionCamera() {
         sendControl(Controls.TAKE_POSITION_CAMERA_SHOT)
     }
+    val recordFlightData = MutableLiveData<Boolean>(false);
+    fun setRecordFlightData(value: Boolean) {
+        recordFlightData.value = value
+        sendControl(if (value) Controls.START_DATA_RECORDING else Controls.STOP_DATA_RECORDING)
+    }
+    val joystickSensitivity = MutableLiveData<Float>(2.5f);
+    fun setJoystickSensitivity(value: Float) {
+        joystickSensitivity.value = value
+    }
     fun saveCurrentSettings() {
         with (sharedPref.edit()) {
             putFloat("PITCH_PROP_COEF", pitchPropCoef.value!!)
@@ -468,6 +479,7 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
             putFloat("POSITION_FILTERING", positionFiltering.value!!)
             putFloat("POSITION_DER_FILTERING", positionDerFiltering.value!!)
             putInt("HOLD_MODE", holdMode.value!!)
+            putFloat("JOYSTICK_SENSITIVITY", joystickSensitivity.value!!)
             apply()
         }
     }
@@ -518,7 +530,7 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
         positionFiltering.value = sharedPref.getFloat("POSITION_FILTERING", 0f)
         positionDerFiltering.value = sharedPref.getFloat("POSITION_DER_FILTERING", 0f)
         holdMode.value = sharedPref.getInt("HOLD_MODE", 1)
-
+        joystickSensitivity.value = sharedPref.getFloat("JOYSTICK_SENSITIVITY", 2.5f)
     }
     fun sendCurrentSettings() {
         sendOneFloatControl(Controls.SET_PITCH_PROP_COEF, pitchPropCoef.value!!, true)

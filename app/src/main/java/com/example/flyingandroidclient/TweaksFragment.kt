@@ -72,6 +72,7 @@ class TweaksFragment : Fragment() {
         binding.sliderPosInt.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPositionIntCoef(value, isLast) }
         binding.sliderPosDer.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPositionDerCoef(value, isLast) }
         binding.sliderPosILimit.setValueChangedListener { value: Float, isLast: Boolean -> model.controls.setPositionIntLimit(value, isLast) }
+        binding.sliderJoystickSensitivity.setValueChangedListener{ value: Float, _: Boolean -> model.controls.setJoystickSensitivity(value) }
         return binding.root
     }
 
