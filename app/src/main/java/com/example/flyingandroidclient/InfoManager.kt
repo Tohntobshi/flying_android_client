@@ -86,6 +86,13 @@ class InfoManager {
         max - min
     }
 
+    private val pRNoise = PairMediatorLiveData(pitchGyroNoise, rollGyroNoise)
+    private val pRYNoise = PairMediatorLiveData(pRNoise, yawGyroNoise)
+
+    val gyroNoise = Transformations.map(pRYNoise) {
+        it.first!!.first!! + it.first!!.second!! + it.second!!
+    }
+
     val landingFlag = MutableLiveData<Boolean>(false)
 
     val batteryVoltage = MutableLiveData<Float>(0.0f)
