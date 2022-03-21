@@ -430,6 +430,12 @@ class ControlsManager(private val viewModel: MainActivityViewModel): SensorEvent
     fun setJoystickSensitivity(value: Float) {
         joystickSensitivity.value = value
     }
+    fun startVideoTransmission() {
+        sendControl(Controls.START_VIDEO_TRANSMISSION)
+    }
+    fun stopVideoTransmission() {
+        sendControl(Controls.STOP_VIDEO_TRANSMISSION)
+    }
     fun saveCurrentSettings() {
         with (sharedPref.edit()) {
             putFloat("PITCH_PROP_COEF", pitchPropCoef.value!!)

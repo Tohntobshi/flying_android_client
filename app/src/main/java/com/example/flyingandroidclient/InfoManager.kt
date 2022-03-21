@@ -11,6 +11,8 @@ fun <T> MutableList<T>.addNotExceed(element: T, maxSize: Int) {
 }
 
 class InfoManager {
+    val videoDecoder = VideoDecoder()
+
     val pitchErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val rollErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val pitchErrorChangeRates = MutableLiveData<MutableList<Float>>(mutableListOf())
@@ -198,6 +200,10 @@ class InfoManager {
             numSatellites.value = ByteBuffer.wrap(data, 7, 4).int
             return
         }
-
+        if (data[0] == MessageTypes.VIDEO_FRAME.ordinal.toByte()) {
+            val videoPacket = ByteBuffer.wrap(data, 1, data.size - 1)
+            videoDecoder.putPacket(videoPacket)
+            return
+        }
     }
 }

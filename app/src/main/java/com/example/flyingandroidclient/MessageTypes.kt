@@ -3,7 +3,8 @@ package com.example.flyingandroidclient
 enum class MessageTypes {
     CONTROLS,
     PRIMARY_INFO,
-    SECONDARY_INFO
+    SECONDARY_INFO,
+    VIDEO_FRAME
 }
 
 enum class Controls {
@@ -87,5 +88,8 @@ enum class Controls {
     SET_HOLD_MODE,
     TAKE_POSITION_CAMERA_SHOT,
     START_DATA_RECORDING,
-    STOP_DATA_RECORDING
+    STOP_DATA_RECORDING,
+
+    START_VIDEO_TRANSMISSION,
+    STOP_VIDEO_TRANSMISSION
 };

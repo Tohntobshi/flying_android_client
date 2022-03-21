@@ -13,7 +13,7 @@ import java.lang.NullPointerException
 import java.nio.ByteBuffer
 import java.util.UUID
 
-val MAX_MESSAGE_SIZE = 5000
+val MAX_MESSAGE_SIZE = 20000
 
 class BluetoothConnection {
     private val btAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
@@ -48,15 +48,18 @@ class BluetoothConnection {
                     val messageSize = ByteBuffer.wrap(bufferMesSize).getInt()
                     if (messageSize > MAX_MESSAGE_SIZE) throw IOException("message size is too big")
                     val bufferMesData = ByteArray(messageSize)
-                    val numBytes2 = inStream!!.read(bufferMesData)
-                    if (numBytes2 != messageSize) throw IOException("message size conflict")
+                    var bytesReceived = 0
+                    while (true) {
+                        bytesReceived += inStream!!.read(bufferMesData, bytesReceived, messageSize - bytesReceived)
+                        if (bytesReceived >= messageSize) break
+                    }
 //                    Log.i("myinfo", "got message size $messageSize")
                     withContext(Dispatchers.Main) {
                         onRead(bufferMesData)
                     }
                 }
             } catch (e: IOException) {
-
+                Log.i("myinfo", e.message ?: "IOException but no msg")
             } catch (e: NullPointerException) {
 
             } finally {

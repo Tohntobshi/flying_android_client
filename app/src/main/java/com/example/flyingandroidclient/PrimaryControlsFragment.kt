@@ -58,11 +58,13 @@ class PrimaryControlsFragment : Fragment() {
         super.onResume()
         model.controls.startSensorListening()
         model.controls.startSendingPrimaryInfo()
+        model.controls.startVideoTransmission()
     }
 
     override fun onPause() {
         super.onPause()
         model.controls.stopSensorListening()
         model.controls.stopSendingPrimaryInfo()
+        model.controls.stopVideoTransmission()
     }
 }
