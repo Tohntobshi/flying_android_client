@@ -15,6 +15,16 @@
         android:background="@color/cardview_dark_background"
         tools:context=".MainActivity">
 
+        <com.example.flyingandroidclient.VideoFrame
+            android:id="@+id/videoView"
+            app:image="@{viewmodel.info.videoDecoder.lastDecodedFrame}"
+            android:layout_width="240dp"
+            android:layout_height="320dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.example.flyingandroidclient.Joystick
             android:id="@+id/joystick"
             android:layout_width="0dp"
@@ -43,6 +53,8 @@
             app:relativeAcc="@{viewmodel.controls.relativeAcceleration}"
             app:maxDesiredHeight="3"
             />
+
+
 
         <TextView
             android:id="@+id/textView"

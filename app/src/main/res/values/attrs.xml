@@ -35,4 +35,7 @@
         <attr name="xMinLabel" format="string" />
         <attr name="yMinLabel" format="string" />
     </declare-styleable>
+    <declare-styleable name="VideoFrame">
+        <attr name="image" format="reference" />
+    </declare-styleable>
 </resources>

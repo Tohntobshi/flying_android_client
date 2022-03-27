@@ -5,13 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import java.nio.ByteBuffer
 
-fun <T> MutableList<T>.addNotExceed(element: T, maxSize: Int) {
-    this.add(element)
-    if (this.size > maxSize) this.removeFirst()
-}
-
-class InfoManager {
-    val videoDecoder = VideoDecoder()
+class InfoManager (private val viewModel: MainActivityViewModel) {
+    val videoDecoder = VideoDecoder(viewModel)
 
     val pitchErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val rollErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
@@ -201,7 +196,7 @@ class InfoManager {
             return
         }
         if (data[0] == MessageTypes.VIDEO_FRAME.ordinal.toByte()) {
-            val videoPacket = ByteBuffer.wrap(data, 1, data.size - 1)
+            val videoPacket = data.slice(1 until data.size).toByteArray()
             videoDecoder.putPacket(videoPacket)
             return
         }

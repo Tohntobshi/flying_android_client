@@ -21,7 +21,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val appl: Application = application
     val connection = BluetoothConnection()
     val controls = ControlsManager(this)
-    val info = InfoManager()
+    val info = InfoManager(this)
     val vibrator = application.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     val isPresetsSpoilerOpen = MutableLiveData<Boolean>(false)
