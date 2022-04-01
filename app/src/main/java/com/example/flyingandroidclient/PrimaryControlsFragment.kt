@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.flyingandroidclient.databinding.FragmentPrimaryControlsBinding
+import kotlinx.coroutines.Job
 
 class PrimaryControlsFragment : Fragment() {
     lateinit var model: MainActivityViewModel

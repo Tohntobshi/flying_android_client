@@ -6,7 +6,9 @@ import androidx.lifecycle.Transformations
 import java.nio.ByteBuffer
 
 class InfoManager (private val viewModel: MainActivityViewModel) {
-    val videoDecoder = VideoDecoder(viewModel)
+    val videoDecoder = VideoDecoder(viewModel).also {
+        it.startDecodingToBitmap()
+    }
 
     val pitchErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
     val rollErrors = MutableLiveData<MutableList<Float>>(mutableListOf())
